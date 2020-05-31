@@ -23,6 +23,11 @@ namespace WindowsSoundControl
         public struct DeviceInfo
         {
             public string name, guid;
+
+            public override string ToString()
+            {
+                return this.name;
+            }
         }
     }
 }
