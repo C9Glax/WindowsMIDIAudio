@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiAccess", "MidiAccess\Mi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDI2WindowsAudioConsole", "MIDI2WindowsAudioConsole\MIDI2WindowsAudioConsole.csproj", "{F99B8C03-67F7-4DCC-8B65-12445E24588B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDI2WindowsAudioTray", "MIDI2WindowsAudioTray\MIDI2WindowsAudioTray.csproj", "{EDC4C420-4462-4127-A12C-9165FB43A17E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F99B8C03-67F7-4DCC-8B65-12445E24588B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F99B8C03-67F7-4DCC-8B65-12445E24588B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F99B8C03-67F7-4DCC-8B65-12445E24588B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC4C420-4462-4127-A12C-9165FB43A17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC4C420-4462-4127-A12C-9165FB43A17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC4C420-4462-4127-A12C-9165FB43A17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC4C420-4462-4127-A12C-9165FB43A17E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

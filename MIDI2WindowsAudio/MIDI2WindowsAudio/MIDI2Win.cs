@@ -24,6 +24,17 @@ namespace MIDI2WindowsAudio
             }
         }
 
+        public event MidiEventHandler OnMidi;
+        public delegate void MidiEventHandler(object sender, MidiControlArgs e);
+        public class MidiControlArgs : EventArgs
+        {
+            public int control { get; }
+            public MidiControlArgs(int control)
+            {
+                this.control = control;
+            }
+        }
+
         public MIDI2Win(Controller.FilterType filter, string midiIn, string midiOut) {
 
             this.volume = new Dictionary<int, AudioDevice>();
@@ -35,6 +46,7 @@ namespace MIDI2WindowsAudio
 
         private void OnMidiMessageReceived(object sender, Controller.MidiMessageReceivedEventArgs e)
         {
+            this.OnMidi?.Invoke(this, new MidiControlArgs(e.control));
             this.OnLog?.Invoke(this, new LogArgs("Input: {0} Value: {1}", e.control, e.value));
             if (this.volume.ContainsKey(e.control))
             {
@@ -66,7 +78,7 @@ namespace MIDI2WindowsAudio
         {
             Dictionary<string, string> settings = new Dictionary<string, string>();
             foreach (int volumeKey in this.volume.Keys)
-                settings.Add(this.volume[volumeKey].GetGuid(), string.Format("{0},{1},",this.volume[volumeKey].GetGuid(), volumeKey));
+                settings.Add(this.volume[volumeKey].GetGuid(), string.Format("{0},{1},",this.volume[volumeKey].GetGuid().Replace("}.{","@").Split('@')[1].Substring(0,36), volumeKey));
             foreach (int muteKey in this.mute.Keys)
                 settings[this.mute[muteKey].GetGuid()] += muteKey;
             File.WriteAllLines(path.EndsWith(".txt") ? path : path+".txt", settings.Values);
