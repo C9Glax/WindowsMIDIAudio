@@ -9,7 +9,7 @@ namespace WindowsSoundControl
         private readonly CoreAudioDevice device;
         private readonly MuteObserver muteObserver;
         private DateTime lastAction;
-        private readonly int maxDeviceActionsPerSecond = 25;
+        private readonly int maxDeviceActionsPerSecond = 10;
         public string Name { get; }
 
         public AudioDevice(string guid)

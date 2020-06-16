@@ -7,19 +7,29 @@ namespace MidiAccess
     {
         private readonly MidiIn midiIn;
         private readonly MidiOut midiOut;
+        int midiInPID { get; }
+        int midiOutPID { get; }
 
-        public enum FilterType { Name, PID }
-        public Controller(FilterType filtertype, string inputDevice, string outputDevice)
+        public Controller(string inputDeviceName, string outputDeviceName)
         {
-            if(filtertype == FilterType.Name)
-            {
-                this.midiIn = MidiInformation.GetInputDeviceWithName(inputDevice);
-                this.midiOut = MidiInformation.GetOutputDeviceWithName(outputDevice);
-            }else if(filtertype == FilterType.PID)
-            {
-                this.midiIn = MidiInformation.GetInputDeviceWithPID(inputDevice);
-                this.midiOut = MidiInformation.GetOutputDeviceWithPID(outputDevice);
-            }
+            this.midiIn = MidiInformation.GetInputDeviceWithName(inputDeviceName);
+            this.midiOut = MidiInformation.GetOutputDeviceWithName(outputDeviceName);
+            this.midiInPID = MidiInformation.GetPIDOfDevice(inputDeviceName);
+            this.midiOutPID = MidiInformation.GetPIDOfDevice(outputDeviceName);
+            this.Start();
+        }
+
+        public Controller(int inputDevicePID, int outputDevicePID)
+        {
+            this.midiIn = MidiInformation.GetInputDeviceWithPID(inputDevicePID);
+            this.midiOut = MidiInformation.GetOutputDeviceWithPID(outputDevicePID);
+            this.midiInPID = inputDevicePID;
+            this.midiOutPID = outputDevicePID;
+            this.Start();
+        }
+
+        private void Start()
+        {
             this.midiIn.Start();
             this.midiIn.MessageReceived += MessageReceived;
         }

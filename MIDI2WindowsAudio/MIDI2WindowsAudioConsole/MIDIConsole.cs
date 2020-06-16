@@ -22,8 +22,9 @@ namespace MIDI2WindowsAudioConsole
                 Console.WriteLine("{0}) {1}", outi + 1, midiOutputDevices[outi]);
             string midiOutDevice = midiOutputDevices[Convert.ToInt32(Console.ReadLine()) - 1];
 
-            MIDI2Win controller = new MIDI2Win(Controller.FilterType.Name, midiInDevice, midiOutDevice);
+            MIDI2Win controller = new MIDI2Win(midiInDevice, midiOutDevice);
             controller.OnLog += (s, e) => { Console.WriteLine("[{0}] {1}", DateTime.Now.ToLocalTime() ,e.LogText); };
+            controller.LoadSettings();
 
             Console.WriteLine("Loading Audio Devices...");
             AudioDeviceInfo.DeviceInfo[] devices = AudioDeviceInfo.GetAudioDevices();
@@ -43,8 +44,9 @@ namespace MIDI2WindowsAudioConsole
                         Console.WriteLine("  quit");
                         Console.WriteLine("  listaudiodevices");
                         Console.WriteLine("  addcontrol <audiodeviceindex> <volumecontrol> <mutecontrol>");
-                        Console.WriteLine("  load <path>");
-                        Console.WriteLine("  save <path>");
+                        Console.WriteLine("  import <path>");
+                        Console.WriteLine("  export <path>");
+                        Console.WriteLine("  savesettings");
                         break;
                     case "listaudiodevices":
                         for (ushort audioi = 0; audioi < devices.Length; audioi++)
@@ -55,7 +57,7 @@ namespace MIDI2WindowsAudioConsole
                             Console.WriteLine("Correct: addcontrol <audiodeviceindex> <volumecontrol> <mutecontrol>");
                         try
                         {
-                            string guid = devices[Convert.ToInt32(split[1])].guid;
+                            string guid = devices[Convert.ToInt32(split[1])-1].guid;
                             int volumecontrol = Convert.ToInt32(split[2]);
                             int mutecontrol = Convert.ToInt32(split[3]);
 
@@ -66,15 +68,18 @@ namespace MIDI2WindowsAudioConsole
                             Console.WriteLine("Variables have to be integers.");
                         }
                         break;
-                    case "load":
+                    case "import":
                         if (split.Length != 2)
-                            Console.WriteLine("Correct: load <path>");
+                            Console.WriteLine("Correct: import <path>");
                         controller.ImportSettings(split[1]);
                         break;
-                    case "save":
+                    case "export":
                         if (split.Length != 2)
-                            Console.WriteLine("Correct: save <path>");
+                            Console.WriteLine("Correct: export <path>");
                         controller.ExportSettings(split[1]);
+                        break;
+                    case "savesettings":
+                        controller.SaveSettings();
                         break;
                     case "quit":break;
                     default:
@@ -82,6 +87,7 @@ namespace MIDI2WindowsAudioConsole
                         break;
                 }
             } while (line != "quit");
+            controller.SaveSettings();
         }
 
         static void Main(string[] args)

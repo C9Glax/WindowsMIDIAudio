@@ -37,7 +37,7 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listBoxAudioDevices = new System.Windows.Forms.ListBox();
             this.lblAudioDevices = new System.Windows.Forms.Label();
@@ -51,8 +51,12 @@
             this.lblMidiIn = new System.Windows.Forms.Label();
             this.lblMidiOut = new System.Windows.Forms.Label();
             this.lblControl = new System.Windows.Forms.Label();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusText = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenuStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip
@@ -68,7 +72,7 @@
             // 
             this.toolStripLoad.Enabled = false;
             this.toolStripLoad.Name = "toolStripLoad";
-            this.toolStripLoad.Size = new System.Drawing.Size(180, 22);
+            this.toolStripLoad.Size = new System.Drawing.Size(100, 22);
             this.toolStripLoad.Text = "Load";
             this.toolStripLoad.Click += new System.EventHandler(this.LoadFile_Click);
             // 
@@ -76,7 +80,7 @@
             // 
             this.toolStripSave.Enabled = false;
             this.toolStripSave.Name = "toolStripSave";
-            this.toolStripSave.Size = new System.Drawing.Size(180, 22);
+            this.toolStripSave.Size = new System.Drawing.Size(100, 22);
             this.toolStripSave.Text = "Save";
             this.toolStripSave.Click += new System.EventHandler(this.SaveFile_Click);
             // 
@@ -108,19 +112,20 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem,
             this.saveToolStripMenuItem});
             this.fileToolStripMenuItem.Enabled = false;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // openToolStripMenuItem
+            // importToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openToolStripMenuItem.Text = "Load";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.LoadFile_Click);
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.LoadFile_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -238,11 +243,35 @@
             this.lblControl.TabIndex = 13;
             this.lblControl.Text = "Last Pressed:";
             // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusText});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 276);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(624, 22);
+            this.statusStrip1.TabIndex = 14;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusText
+            // 
+            this.toolStripStatusText.Name = "toolStripStatusText";
+            this.toolStripStatusText.Size = new System.Drawing.Size(39, 17);
+            this.toolStripStatusText.Text = "Status";
+            // 
             // TrayForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 279);
+            this.ClientSize = new System.Drawing.Size(624, 298);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.lblControl);
             this.Controls.Add(this.lblMidiOut);
             this.Controls.Add(this.lblMidiIn);
@@ -267,6 +296,8 @@
             this.contextMenuStrip.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -281,7 +312,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripExit;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ListBox listBoxAudioDevices;
         private System.Windows.Forms.Label lblAudioDevices;
@@ -295,6 +326,9 @@
         private System.Windows.Forms.Label lblMidiIn;
         private System.Windows.Forms.Label lblMidiOut;
         private System.Windows.Forms.Label lblControl;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusText;
     }
 }
 

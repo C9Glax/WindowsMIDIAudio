@@ -35,12 +35,12 @@ namespace MIDI2WindowsAudio
             }
         }
 
-        public MIDI2Win(Controller.FilterType filter, string midiIn, string midiOut) {
+        public MIDI2Win(string midiInName, string midiOutName) {
 
             this.volume = new Dictionary<int, AudioDevice>();
             this.mute = new Dictionary<int, AudioDevice>();
 
-            this.midi = new Controller(filter, midiIn, midiOut);
+            this.midi = new Controller(midiInName, midiOutName);
             this.midi.OnMidiMessageReceived += OnMidiMessageReceived;
         }
 
@@ -68,6 +68,7 @@ namespace MIDI2WindowsAudio
                 this.volume[midiVolumeControl] = newAudioDevice;
             else
                 this.volume.Add(midiVolumeControl, newAudioDevice);
+
             if (this.mute.ContainsKey(midiMuteControl))
                 this.mute[midiMuteControl] = newAudioDevice;
             else
@@ -76,13 +77,36 @@ namespace MIDI2WindowsAudio
 
         public void ExportSettings(string path)
         {
+            string[] settings = new string[Properties.config.Default.bindings.Count];
+            for (int i = 0; i < settings.Length; i++)
+                settings[i] = Properties.config.Default.bindings[i];
+            File.WriteAllLines(path.EndsWith(".txt") ? path : path+".txt", settings);
+            this.OnLog?.Invoke(this, new LogArgs("Exported assignments to {0}", path));
+        }
+
+        public void SaveSettings()
+        {
             Dictionary<string, string> settings = new Dictionary<string, string>();
             foreach (int volumeKey in this.volume.Keys)
-                settings.Add(this.volume[volumeKey].GetGuid(), string.Format("{0},{1},",this.volume[volumeKey].GetGuid().Replace("}.{","@").Split('@')[1].Substring(0,36), volumeKey));
+                settings.Add(this.volume[volumeKey].GetGuid(), string.Format("{0},{1},", this.volume[volumeKey].GetGuid().Replace("}.{", "@").Split('@')[1].Substring(0, 36), volumeKey));
             foreach (int muteKey in this.mute.Keys)
                 settings[this.mute[muteKey].GetGuid()] += muteKey;
-            File.WriteAllLines(path.EndsWith(".txt") ? path : path+".txt", settings.Values);
-            this.OnLog?.Invoke(this, new LogArgs("Exported assignments to {0}", path));
+            if (Properties.config.Default.bindings == null)
+                Properties.config.Default.bindings = new System.Collections.Specialized.StringCollection();
+            foreach (string setting in settings.Values)
+                Properties.config.Default.bindings.Add(setting);
+            Properties.config.Default.Save();
+        }
+
+        public void LoadSettings()
+        {
+            if(Properties.config.Default.bindings != null)
+                foreach(string setting in Properties.config.Default.bindings)
+                {
+                    string[] parts = setting.Split(',');
+                    this.AddControl(Convert.ToInt32(parts[1]), Convert.ToInt32(parts[2]), parts[0]);
+                }
+            this.OnLog?.Invoke(this, new LogArgs("Loaded previous settings."));
         }
 
         public void ImportSettings(string path)
@@ -92,6 +116,7 @@ namespace MIDI2WindowsAudio
             {
                 string[] parts = assignment.Split(',');
                 this.AddControl(Convert.ToInt32(parts[1]), Convert.ToInt32(parts[2]), parts[0]);
+                Properties.config.Default.bindings.Add(assignment);
             }
             this.OnLog?.Invoke(this, new LogArgs("Read assignments from {0}", path));
         }

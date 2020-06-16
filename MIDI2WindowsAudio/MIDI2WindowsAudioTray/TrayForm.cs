@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsSoundControl;
 using MIDI2WindowsAudio;
@@ -28,27 +21,24 @@ namespace MIDI2WindowsAudioTray
 
         private void LoadFile_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "TEXT (*.txt)|All files (*.*)";
-            dialog.FilterIndex = 0;
-            dialog.RestoreDirectory = true;
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Filter = "TEXT (*.txt)|All files (*.*)",
+                FilterIndex = 0,
+                RestoreDirectory = true
+            };
             if (dialog.ShowDialog() == DialogResult.OK)
                 this.controller.ImportSettings(dialog.FileName);
         }
 
         private void SaveFile_Click(object sender, EventArgs e)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "TEXT (*.txt)|All files (*.*)";
-            dialog.FilterIndex = 0;
-            dialog.RestoreDirectory = true;
-            if (dialog.ShowDialog() == DialogResult.OK)
-                this.controller.ExportSettings(dialog.FileName);
-
+            this.controller.SaveSettings();
         }
 
         private void toolStripExit_Click(object sender, EventArgs e)
         {
+            this.controller.SaveSettings();
             this.Close();
         }
 
@@ -61,6 +51,7 @@ namespace MIDI2WindowsAudioTray
         private void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
             this.Show();
+            this.Focus();
         }
 
         private void TrayForm_Shown(object sender, EventArgs e)
@@ -88,8 +79,11 @@ namespace MIDI2WindowsAudioTray
             if (this.listBoxMidiOut.SelectedIndex == -1)
                 return;
             this.midiOut = this.listBoxMidiOut.SelectedItem.ToString();
-            this.controller = new MIDI2Win(Controller.FilterType.Name, this.midiIn, this.midiOut);
+            this.controller = new MIDI2Win(this.midiIn, this.midiOut);
             this.controller.OnMidi += Controller_OnMidi;
+            this.controller.OnLog += (s, log) => { this.toolStripStatusText.Text = log.LogText; };
+            this.controller.LoadSettings();
+
             this.listBoxMidiOut.Enabled = false;
             this.listBoxAudioDevices.Enabled = true;
             this.btnAddControl.Enabled = true;
@@ -110,6 +104,18 @@ namespace MIDI2WindowsAudioTray
                 controller.AddControl(volumecontrol, mutecontrol, guid);
             }
             catch (FormatException) { }
+        }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Filter = "TEXT (*.txt)|All files (*.*)",
+                FilterIndex = 0,
+                RestoreDirectory = true
+            };
+            if (dialog.ShowDialog() == DialogResult.OK)
+                this.controller.ExportSettings(dialog.FileName);
         }
 
         private void Controller_OnMidi(object sender, MIDI2Win.MidiControlArgs e)

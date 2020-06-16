@@ -27,6 +27,17 @@ namespace MidiAccess
             return null;
         }
 
+        public static int GetPIDOfDevice(string name)
+        {
+            for (int i = 0; i < MidiIn.NumberOfDevices; i++)
+                if (MidiIn.DeviceInfo(i).ProductName.Equals(name))
+                    return MidiIn.DeviceInfo(i).ProductId;
+            for (int i = 0; i < MidiOut.NumberOfDevices; i++)
+                if (MidiOut.DeviceInfo(i).ProductName.Equals(name))
+                    return MidiOut.DeviceInfo(i).ProductId;
+            return -1;
+        }
+
         public static MidiOut GetOutputDeviceWithName(string name)
         {
             for (int i = 0; i < MidiOut.NumberOfDevices; i++)
@@ -35,7 +46,7 @@ namespace MidiAccess
             return null;
         }
 
-        public static MidiIn GetInputDeviceWithPID(string pid)
+        public static MidiIn GetInputDeviceWithPID(int pid)
         {
             for (int i = 0; i < MidiIn.NumberOfDevices; i++)
                 if (MidiIn.DeviceInfo(i).ProductId.Equals(pid))
@@ -43,7 +54,7 @@ namespace MidiAccess
             return null;
         }
 
-        public static MidiOut GetOutputDeviceWithPID(string pid)
+        public static MidiOut GetOutputDeviceWithPID(int pid)
         {
             for (int i = 0; i < MidiOut.NumberOfDevices; i++)
                 if (MidiOut.DeviceInfo(i).ProductId.Equals(pid))
