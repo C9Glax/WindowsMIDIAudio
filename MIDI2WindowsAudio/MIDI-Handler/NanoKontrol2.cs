@@ -19,12 +19,10 @@ public class NanoKontrol2
         midiIn.StartEventsListening();
     }
     
-    private void OnEventReceived(object sender, MidiEventReceivedEventArgs eventArgs)
+    private void OnEventReceived(object? sender, MidiEventReceivedEventArgs eventArgs)
     {
-        if (eventArgs.Event is ControlChangeEvent)
+        if (eventArgs.Event is ControlChangeEvent midiEvent)
         {
-            ControlChangeEvent midiEvent = (ControlChangeEvent)eventArgs.Event;
-
             ControlChangeEventArgs newEventArgs;
             SevenBitNumber controlAbsoluteNumber = midiEvent.ControlNumber;
             SevenBitNumber controlValue = midiEvent.ControlValue;
