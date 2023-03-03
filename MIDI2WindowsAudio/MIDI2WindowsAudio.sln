@@ -3,15 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDI2WindowsAudio", "MIDI2WindowsAudio\MIDI2WindowsAudio.csproj", "{5D8E7694-005B-45FB-9921-F53F9663AB9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDI-Handler", "MIDI-Handler\MIDI-Handler.csproj", "{26338E62-2355-40C3-82A4-241B0252317B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsSoundControl", "WindowsSoundControl\WindowsSoundControl.csproj", "{12284FAB-2FAE-4B51-ABCB-778AEFADA87E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiAccess", "MidiAccess\MidiAccess.csproj", "{76B89794-80C9-4376-B829-DE564158E476}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDI2WindowsAudioConsole", "MIDI2WindowsAudioConsole\MIDI2WindowsAudioConsole.csproj", "{F99B8C03-67F7-4DCC-8B65-12445E24588B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDI2WindowsAudioTray", "MIDI2WindowsAudioTray\MIDI2WindowsAudioTray.csproj", "{EDC4C420-4462-4127-A12C-9165FB43A17E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KorgNanokontrol2MWAudio", "KorgNanokontrol2MWAudio\KorgNanokontrol2MWAudio.csproj", "{78DC6617-7D66-429A-8A91-4D0684DD2447}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,26 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5D8E7694-005B-45FB-9921-F53F9663AB9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D8E7694-005B-45FB-9921-F53F9663AB9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D8E7694-005B-45FB-9921-F53F9663AB9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D8E7694-005B-45FB-9921-F53F9663AB9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12284FAB-2FAE-4B51-ABCB-778AEFADA87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12284FAB-2FAE-4B51-ABCB-778AEFADA87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12284FAB-2FAE-4B51-ABCB-778AEFADA87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12284FAB-2FAE-4B51-ABCB-778AEFADA87E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76B89794-80C9-4376-B829-DE564158E476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76B89794-80C9-4376-B829-DE564158E476}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76B89794-80C9-4376-B829-DE564158E476}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76B89794-80C9-4376-B829-DE564158E476}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F99B8C03-67F7-4DCC-8B65-12445E24588B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F99B8C03-67F7-4DCC-8B65-12445E24588B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F99B8C03-67F7-4DCC-8B65-12445E24588B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F99B8C03-67F7-4DCC-8B65-12445E24588B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDC4C420-4462-4127-A12C-9165FB43A17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDC4C420-4462-4127-A12C-9165FB43A17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDC4C420-4462-4127-A12C-9165FB43A17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDC4C420-4462-4127-A12C-9165FB43A17E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26338E62-2355-40C3-82A4-241B0252317B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26338E62-2355-40C3-82A4-241B0252317B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26338E62-2355-40C3-82A4-241B0252317B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26338E62-2355-40C3-82A4-241B0252317B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78DC6617-7D66-429A-8A91-4D0684DD2447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78DC6617-7D66-429A-8A91-4D0684DD2447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78DC6617-7D66-429A-8A91-4D0684DD2447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78DC6617-7D66-429A-8A91-4D0684DD2447}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
