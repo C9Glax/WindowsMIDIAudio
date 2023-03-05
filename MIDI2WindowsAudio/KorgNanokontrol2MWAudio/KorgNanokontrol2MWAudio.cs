@@ -9,7 +9,6 @@ public class KorgNanokontrol2MWAudio
     public bool KeepRunning = true;
     private BindingsManager bindings;
     private WindowsAudioHandler windowsAudioHandler;
-    private AudioDevice[] groupAssignment = new AudioDevice[8];
 
     public static void Main(string[] args)
     {
