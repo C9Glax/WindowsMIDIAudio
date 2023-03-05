@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDI-Handler", "MIDI-Handle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KorgNanokontrol2MWAudio", "KorgNanokontrol2MWAudio\KorgNanokontrol2MWAudio.csproj", "{78DC6617-7D66-429A-8A91-4D0684DD2447}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Audio-Handler", "Audio-Handler\Audio-Handler.csproj", "{1A97FDC4-2426-4068-A03C-7557C9BD43C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{78DC6617-7D66-429A-8A91-4D0684DD2447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78DC6617-7D66-429A-8A91-4D0684DD2447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78DC6617-7D66-429A-8A91-4D0684DD2447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A97FDC4-2426-4068-A03C-7557C9BD43C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A97FDC4-2426-4068-A03C-7557C9BD43C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A97FDC4-2426-4068-A03C-7557C9BD43C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A97FDC4-2426-4068-A03C-7557C9BD43C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
