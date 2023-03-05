@@ -1,4 +1,5 @@
-﻿using CoreAudio;
+﻿using System.Globalization;
+using CoreAudio;
 
 namespace Audio_Handler;
 
@@ -17,8 +18,13 @@ public class AudioSession
     public AudioSession(AudioSessionControl2 session)
     {
         mmsession = session;
-        volume = mmsession.SimpleAudioVolume.MasterVolume;
-        muted = mmsession.SimpleAudioVolume.Mute;
+        if (mmsession.SimpleAudioVolume != null)
+        {
+            volume = mmsession.SimpleAudioVolume.MasterVolume;
+            muted = mmsession.SimpleAudioVolume.Mute;
+        }
+        else throw new Exception(); //TODO
+
         mmsession.OnSimpleVolumeChanged += VolumeChanged;
         mmsession.OnStateChanged += SessionStateChanged;
     }
@@ -29,10 +35,10 @@ public class AudioSession
         OnStateChanged?.Invoke(this);
     }
 
-    private void VolumeChanged(object sender, float volume, bool muted)
+    private void VolumeChanged(object sender, float newVolume, bool newMutedState)
     {
-        this.volume = volume;
-        this.muted = muted;
+        volume = newVolume;
+        muted = newMutedState;
         OnStateChanged?.Invoke(this);
     }
 
@@ -43,13 +49,20 @@ public class AudioSession
 
     public void SetVolumePercentage(float perc)
     {
-        if (perc >= 0 && perc <= 1)
-            mmsession.SimpleAudioVolume.MasterVolume = perc;
+        if (mmsession.SimpleAudioVolume != null)
+        {
+            if (perc >= 0 && perc <= 1)
+                mmsession.SimpleAudioVolume.MasterVolume = perc;
+        }
+        else throw new Exception(); //TODO
+
     }
 
     public void Mute(bool mute)
     {
-        mmsession.SimpleAudioVolume.Mute = mute;
+        if (mmsession.SimpleAudioVolume != null)
+            mmsession.SimpleAudioVolume.Mute = mute;
+        else throw new Exception(); //TODO
     }
 
     public uint GetProcessId()
@@ -59,6 +72,6 @@ public class AudioSession
 
     public override string ToString()
     {
-        return string.Format("{0} Id: {3} State: {1} Volume: {2}", GetName(), muted ? "muted" : "un-muted", volume.ToString(), GetProcessId().ToString());
+        return string.Format("{0} Id: {3} State: {1} Volume: {2}", GetName(), muted ? "muted" : "un-muted", volume.ToString(CultureInfo.CurrentCulture), GetProcessId().ToString());
     }
 }

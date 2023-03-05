@@ -8,7 +8,7 @@ public class NanoKontrol2
 {
     private readonly InputDevice midiIn;
     private readonly OutputDevice midiOut;
-    public static float maxValue = 127f;
+    public const float MaxValue = 127f;
     public event OnControlChangeEventHandler? OnControlChange;
 
     public NanoKontrol2(InputDevice nanoKontrolIn, OutputDevice nanoKontrolOut)

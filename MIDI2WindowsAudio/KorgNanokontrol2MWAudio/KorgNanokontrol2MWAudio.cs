@@ -11,7 +11,7 @@ public class KorgNanokontrol2MWAudio
 
     public static void Main(string[] args)
     {
-        new KorgNanokontrol2MWAudio();
+        var _ = new KorgNanokontrol2MWAudio();
     }
 
     public KorgNanokontrol2MWAudio()
@@ -71,7 +71,7 @@ public class KorgNanokontrol2MWAudio
     {
         if (args.groupNumber <= groupAssignment.Length - 1)
         {
-            float newVolume = args.value / NanoKontrol2.maxValue;
+            float newVolume = args.value / NanoKontrol2.MaxValue;
             groupAssignment[args.groupNumber].SetVolumePercentage(newVolume);
         }
     }

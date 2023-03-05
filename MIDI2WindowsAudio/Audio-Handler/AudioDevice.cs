@@ -1,4 +1,5 @@
-﻿using CoreAudio;
+﻿using System.Globalization;
+using CoreAudio;
 using CoreAudio.Interfaces;
 
 namespace Audio_Handler;
@@ -10,7 +11,7 @@ public class AudioDevice
     public bool muted { get; private set; }
     public bool groupMuted { get; private set; }
     public bool soloMuted { get; private set; }
-    public string Name { get; }
+    public string name { get; }
 
     private Dictionary<uint, AudioSession> sessions = new();
     
@@ -22,12 +23,22 @@ public class AudioDevice
     public AudioDevice(MMDevice device)
     {
         mmdevice = device;
-        volume = mmdevice.AudioEndpointVolume.MasterVolumeLevel;
-        muted = mmdevice.AudioEndpointVolume.Mute;
-        Name = mmdevice.DeviceFriendlyName;
-        UpdateSessions();
-        mmdevice.AudioEndpointVolume.OnVolumeNotification += OnVolumeChange;
-        mmdevice.AudioSessionManager2.OnSessionCreated += AddSession;
+        if (mmdevice.AudioEndpointVolume != null)
+        {
+            volume = mmdevice.AudioEndpointVolume.MasterVolumeLevel;
+            muted = mmdevice.AudioEndpointVolume.Mute;
+            name = mmdevice.DeviceFriendlyName;
+            UpdateSessions();
+            mmdevice.AudioEndpointVolume.OnVolumeNotification += OnVolumeChange;
+        }
+        else
+        {
+            throw new Exception(); //TODO
+        }
+
+        if (mmdevice.AudioSessionManager2 != null)
+            mmdevice.AudioSessionManager2.OnSessionCreated += AddSession;
+        else throw new Exception(); //TODO
     }
 
     private void AddSession(object sender, IAudioSessionControl2 newSession)
@@ -42,15 +53,18 @@ public class AudioDevice
     
     private void UpdateSessions()
     {
-        foreach (AudioSessionControl2 session in mmdevice.AudioSessionManager2.Sessions)
-        {
-            if (!session.IsSystemSoundsSession && !sessions.ContainsKey(session.ProcessID) && session.State != AudioSessionState.AudioSessionStateExpired)
+        if (mmdevice.AudioSessionManager2 != null && mmdevice.AudioSessionManager2.Sessions != null)
+            foreach (AudioSessionControl2 session in mmdevice.AudioSessionManager2.Sessions)
             {
-                AudioSession audioSession = new AudioSession(session);
-                audioSession.OnStateChanged += AudioSessionUpdate;
-                sessions.Add(session.ProcessID, audioSession);
+                if (!session.IsSystemSoundsSession && !sessions.ContainsKey(session.ProcessID) &&
+                    session.State != AudioSessionState.AudioSessionStateExpired)
+                {
+                    AudioSession audioSession = new AudioSession(session);
+                    audioSession.OnStateChanged += AudioSessionUpdate;
+                    sessions.Add(session.ProcessID, audioSession);
+                }
             }
-        }
+        else throw new Exception(); //TODO
     }
 
     private void AudioSessionUpdate(object sender)
@@ -72,29 +86,43 @@ public class AudioDevice
     
     public void SetVolumePercentage(float perc)
     {
-        if(perc >= 0 && perc <= 1)
-            mmdevice.AudioEndpointVolume.MasterVolumeLevelScalar = perc;
+        if (mmdevice.AudioEndpointVolume != null)
+        {
+            if (perc >= 0 && perc <= 1)
+                mmdevice.AudioEndpointVolume.MasterVolumeLevelScalar = perc;
+        }
+        else throw new Exception(); //TODO
     }
 
     public void SetVolumeDecibel(float db)
     {
-        AudioEndPointVolumeVolumeRange range = mmdevice.AudioEndpointVolume.VolumeRange;
-        if (db >= range.MindB && db <= range.MaxdB)
-            mmdevice.AudioEndpointVolume.MasterVolumeLevel = db;
+        if (mmdevice.AudioEndpointVolume != null)
+        {
+            AudioEndPointVolumeVolumeRange range = mmdevice.AudioEndpointVolume.VolumeRange;
+            if (db >= range.MindB && db <= range.MaxdB)
+                mmdevice.AudioEndpointVolume.MasterVolumeLevel = db;
+        }
+        else throw new Exception(); //TODO
     }
 
-    public float GetMaxDB()
+    public float GetMaxDb()
     {
-        return mmdevice.AudioEndpointVolume.VolumeRange.MaxdB;
+        if (mmdevice.AudioEndpointVolume != null)
+            return mmdevice.AudioEndpointVolume.VolumeRange.MaxdB;
+        else throw new Exception(); //TODO
     }
 
-    public float GetMinDB()
+    public float GetMinDb()
     {
-        return mmdevice.AudioEndpointVolume.VolumeRange.MindB;
+        if (mmdevice.AudioEndpointVolume != null)
+            return mmdevice.AudioEndpointVolume.VolumeRange.MindB;
+        else throw new Exception(); //TODO
     }
 
     public void Mute(bool mute, bool soloMute)
     {
+        if (mmdevice.AudioEndpointVolume == null)
+            throw new Exception(); //TODO
         if (soloMute)
         {
             soloMuted = mute;
@@ -118,6 +146,7 @@ public class AudioDevice
 
     public override string ToString()
     {
-        return string.Format("{0} - Mute (G/S): {1} ({2}/{3}) Volume: {4}", Name.PadRight(30).Substring(0,30), muted ? "muted" : "un-muted", groupMuted ? "t" : "f", soloMuted ? "t" : "f" ,volume.ToString());
+        return
+            $"{name.PadRight(30).Substring(0, 30)} - Mute (G/S): {(muted ? "muted" : "un-muted")} ({(groupMuted ? "t" : "f")}/{(soloMuted ? "t" : "f")}) Volume: {volume.ToString(CultureInfo.CurrentCulture)}";
     }
 }

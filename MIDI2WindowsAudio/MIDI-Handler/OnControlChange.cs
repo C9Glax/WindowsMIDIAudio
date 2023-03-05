@@ -25,6 +25,7 @@ public class ControlChangeEventArgs : EventArgs
     public override string ToString()
     {
         return string.Format("{0} absoluteNumber: {1} localNumber: {2} value: {3} name?: {4}", controlType, controlNumber.ToString(), groupNumber.ToString(), value.ToString(),
+            // ReSharper disable once HeapView.BoxingAllocation
             controlButtonName != null ? controlButtonName : "");
     }
 

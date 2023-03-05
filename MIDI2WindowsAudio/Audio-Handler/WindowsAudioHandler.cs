@@ -33,21 +33,21 @@ public class WindowsAudioHandler
         string inputsStr = "[Inputs]\n";
         foreach (AudioDevice input in inputs)
         {
-            inputsStr += string.Format("\t{0}\n", input.ToString());
+            inputsStr += $"\t{input}\n";
             foreach (AudioSession session in input.GetSessions())
             {
-                inputsStr += string.Format("\t\t{0}\n", session.ToString());
+                inputsStr += $"\t\t{session}\n";
             }
         }
         string outputsStr = "[Outputs]\n";
         foreach (AudioDevice output in outputs)
         {
-            inputsStr += string.Format("\t{0}\n", output.ToString());
+            inputsStr += $"\t{output}\n";
             foreach (AudioSession session in output.GetSessions())
             {
-                inputsStr += string.Format("\t\t{0}\n", session.ToString());
+                inputsStr += $"\t\t{session}\n";
             }
         }
-        return string.Format("{0}\n{1}", inputsStr, outputsStr);
+        return $"{inputsStr}\n{outputsStr}";
     }
 }
