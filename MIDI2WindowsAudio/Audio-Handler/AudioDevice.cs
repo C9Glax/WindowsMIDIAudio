@@ -147,6 +147,6 @@ public class AudioDevice
     public override string ToString()
     {
         return
-            $"{name.PadRight(30).Substring(0, 30)} - Mute (G/S): {(muted ? "muted" : "un-muted")} ({(groupMuted ? "t" : "f")}/{(soloMuted ? "t" : "f")}) Volume: {volume.ToString(CultureInfo.CurrentCulture)}";
+            $"{name.PadRight(40).Substring(0, 40)} - Mute (G/S): {(muted ? "muted" : "un-muted")} ({(groupMuted ? "t" : "f")}/{(soloMuted ? "t" : "f")}) Volume: {volume.ToString(CultureInfo.CurrentCulture)}";
     }
 }
