@@ -8,6 +8,9 @@ public class AudioDevice
     private MMDevice mmdevice;
     public float volume { get; private set; }
     public bool muted { get; private set; }
+    public bool groupMuted { get; private set; }
+    public bool soloMuted { get; private set; }
+    public string Name { get; }
 
     private Dictionary<uint, AudioSession> sessions = new();
     
@@ -19,6 +22,9 @@ public class AudioDevice
     public AudioDevice(MMDevice device)
     {
         mmdevice = device;
+        volume = mmdevice.AudioEndpointVolume.MasterVolumeLevel;
+        muted = mmdevice.AudioEndpointVolume.Mute;
+        Name = mmdevice.DeviceFriendlyName;
         UpdateSessions();
         mmdevice.AudioEndpointVolume.OnVolumeNotification += OnVolumeChange;
         mmdevice.AudioSessionManager2.OnSessionCreated += AddSession;
@@ -63,11 +69,6 @@ public class AudioDevice
         muted = data.Muted;
         OnStateChanged?.Invoke(this);
     }
-
-    public string GetName()
-    {
-        return mmdevice.DeviceFriendlyName;
-    }
     
     public void SetVolumePercentage(float perc)
     {
@@ -92,8 +93,31 @@ public class AudioDevice
         return mmdevice.AudioEndpointVolume.VolumeRange.MindB;
     }
 
+    public void Mute(bool mute, bool soloMute)
+    {
+        if (soloMute)
+        {
+            soloMuted = mute;
+        }
+        else
+        {
+            groupMuted = mute;
+        }
+
+        if (soloMuted || groupMuted)
+        {
+            mmdevice.AudioEndpointVolume.Mute = true;
+            muted = true;
+        }
+        else
+        {
+            mmdevice.AudioEndpointVolume.Mute = false;
+            muted = false;
+        }
+    }
+
     public override string ToString()
     {
-        return string.Format("{0} State: {1} Volume: {2}", GetName(), muted ? "muted" : "un-muted", volume.ToString());
+        return string.Format("{0} - Mute (G/S): {1} ({2}/{3}) Volume: {4}", Name.PadRight(30).Substring(0,30), muted ? "muted" : "un-muted", groupMuted ? "t" : "f", soloMuted ? "t" : "f" ,volume.ToString());
     }
 }
