@@ -4,9 +4,9 @@ namespace Audio_Handler;
 
 public class WindowsAudioHandler
 {
-    private AudioDevice[] inputs { get; }
-    private AudioDevice[] outputs { get; }
-    
+    public AudioDevice[] inputs { get; }
+    public AudioDevice[] outputs { get; }
+
     public WindowsAudioHandler()
     {
         Guid guid = Guid.NewGuid();
