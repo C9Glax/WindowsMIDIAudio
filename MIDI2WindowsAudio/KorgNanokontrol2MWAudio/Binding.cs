@@ -39,7 +39,6 @@ public class Binding
 
     public void Execute(ControlChangeEventArgs eventArgs)
     {
-        Console.WriteLine(this);
         switch (audioAction)
         {
             case AudioAction.SetVolume:
