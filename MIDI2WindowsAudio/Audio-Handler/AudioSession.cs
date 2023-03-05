@@ -8,6 +8,9 @@ public class AudioSession
     private AudioSessionControl2 mmsession;
     public float volume { get; private set; }
     public bool muted { get; private set; }
+    public bool groupMuted { get; private set; }
+    public bool soloMuted { get; private set; }
+    public string name { get; }
 
     public AudioSessionState sessionState { get; private set; }
 
@@ -18,6 +21,7 @@ public class AudioSession
     public AudioSession(AudioSessionControl2 session)
     {
         mmsession = session;
+        name = mmsession.DisplayName;
         if (mmsession.SimpleAudioVolume != null)
         {
             volume = mmsession.SimpleAudioVolume.MasterVolume;
@@ -64,6 +68,31 @@ public class AudioSession
             mmsession.SimpleAudioVolume.Mute = mute;
         else throw new Exception(); //TODO
     }
+    
+    public void Mute(bool mute, bool soloMute)
+    {
+        if (mmsession.SimpleAudioVolume == null)
+            throw new Exception(); //TODO
+        if (soloMute)
+        {
+            soloMuted = mute;
+        }
+        else
+        {
+            groupMuted = mute;
+        }
+
+        if (soloMuted || groupMuted)
+        {
+            mmsession.SimpleAudioVolume.Mute = true;
+            muted = true;
+        }
+        else
+        {
+            mmsession.SimpleAudioVolume.Mute = false;
+            muted = false;
+        }
+    }
 
     public uint GetProcessId()
     {
@@ -72,6 +101,6 @@ public class AudioSession
 
     public override string ToString()
     {
-        return string.Format("{0} Id: {3} State: {1} Volume: {2}", GetName(), muted ? "muted" : "un-muted", volume.ToString(CultureInfo.CurrentCulture), GetProcessId().ToString());
+        return string.Format("{0} Id: {3} State: {1} Volume: {2}", GetName().PadRight(40).Substring(0, 40), muted ? "muted" : "un-muted", volume.ToString(CultureInfo.CurrentCulture), GetProcessId().ToString());
     }
 }
