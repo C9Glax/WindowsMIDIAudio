@@ -7,6 +7,8 @@ public class KorgNanokontrol2MWAudio
 {
 
     public bool KeepRunning = true;
+    private BindingsManager bindings;
+    private WindowsAudioHandler windowsAudioHandler;
     private AudioDevice[] groupAssignment = new AudioDevice[8];
 
     public static void Main(string[] args)
@@ -18,13 +20,12 @@ public class KorgNanokontrol2MWAudio
     {
         NanoKontrol2 nk2 = MidiHandler.GetNanoKontrol2();
         nk2.OnControlChange += Nk2OnControlChange;
-        WindowsAudioHandler windowsAudioHandler = new WindowsAudioHandler();
-        for (int i = 0; i < groupAssignment.Length && i < windowsAudioHandler.outputs.Length; i++)
-        {
-            groupAssignment[i] = windowsAudioHandler.outputs[i];
-            groupAssignment[i].OnStateChanged += OnAudioDeviceStateChanged;
-            Console.WriteLine("{0}: {1}", i.ToString(), groupAssignment[i]);
-        }
+        windowsAudioHandler = new WindowsAudioHandler();
+        bindings = new BindingsManager();
+        SampleBindings();
+        foreach (AudioDevice ad in windowsAudioHandler.outputs)
+            ad.OnStateChanged += OnAudioDeviceStateChanged;
+        
         Thread listen = new Thread(RunThreadRun);
         listen.Start();
     }
@@ -32,98 +33,17 @@ public class KorgNanokontrol2MWAudio
     private void OnAudioDeviceStateChanged(object sender)
     {
         AudioDevice audioDevice = (AudioDevice)sender;//TODO object type check
-        byte group = byte.MaxValue;
-        for (byte i = 0; i < groupAssignment.Length; i++)
-        {
-            if (groupAssignment[i] == audioDevice)
-            {
-                group = i;
-                break;
-            }
-        }
-        Console.WriteLine("Device changed: {0}", groupAssignment[group]);
+        Console.WriteLine("Device changed: {0}", audioDevice);
         //TODO Flash LED
     }
 
     private void Nk2OnControlChange(object sender, ControlChangeEventArgs eventargs)
     {
-        switch (eventargs.controlType)
-        {
-            case ControlChangeEventArgs.ControlType.ControlButton:
-                ControlButtonPressed(eventargs);
-                break;
-            case ControlChangeEventArgs.ControlType.Fader:
-                FaderMoved(eventargs);
-                break;
-            case ControlChangeEventArgs.ControlType.MuteButton:
-                MuteButtonPressed(eventargs);
-                break;
-            case ControlChangeEventArgs.ControlType.SoloButton:
-                SoloButtonPressed(eventargs);
-                break;
-            default:
-                Console.WriteLine(eventargs.ToString());
-                break;
-        }
+        Console.WriteLine(eventargs);
+        byte control = Convert.ToByte(eventargs.absoluteControlNumber);
+        bindings.ExecuteBinding(control, eventargs);
+        
     }
-
-    private void FaderMoved(ControlChangeEventArgs args)
-    {
-        if (args.groupNumber <= groupAssignment.Length - 1)
-        {
-            float newVolume = args.value / NanoKontrol2.MaxValue;
-            groupAssignment[args.groupNumber].SetVolumePercentage(newVolume);
-        }
-    }
-
-    private void MuteButtonPressed(ControlChangeEventArgs args)
-    {
-        if (args.groupNumber <= groupAssignment.Length - 1)
-        {
-            groupAssignment[args.groupNumber].Mute(!groupAssignment[args.groupNumber].groupMuted, false);
-        }
-    }
-
-    private void SoloButtonPressed(ControlChangeEventArgs args)
-    {
-        for (byte i = 0; i < groupAssignment.Length; i++)
-        {
-            if (i != args.groupNumber)
-            {
-                groupAssignment[i].Mute((args.value != 0), true);
-            }
-            else
-            {
-                groupAssignment[i].Mute(false, true);
-            }
-        }
-    }
-
-    private void ControlButtonPressed(ControlChangeEventArgs args)
-    {
-        if (args.value != 0)
-            return;
-        switch (args.controlButtonName)
-        {
-            case ControlChangeEventArgs.ControlButtonName.Play:
-                MediaController.PlayPause();
-                break;
-            case ControlChangeEventArgs.ControlButtonName.Previous:
-                MediaController.Previous();
-                break;
-            case ControlChangeEventArgs.ControlButtonName.Next:
-                MediaController.Next();
-                break;
-            case ControlChangeEventArgs.ControlButtonName.Stop:
-                MediaController.Stop();
-                break;
-            default:
-                Console.WriteLine(args);
-                break;
-        }
-    }
-    
-    
 
     private void RunThreadRun()
     {
@@ -136,5 +56,20 @@ public class KorgNanokontrol2MWAudio
     public void Dispose()
     {
         KeepRunning = false;
+    }
+
+    private void SampleBindings()
+    {
+        for (int i = 0; i < windowsAudioHandler.outputs.Length; i++)
+        {
+            bindings.AddBinding(Convert.ToByte(i), new Binding(Binding.AudioAction.SetVolume, windowsAudioHandler.outputs[i]));
+            bindings.AddBinding(Convert.ToByte(i + 32), new Binding(Binding.AudioAction.Solo, windowsAudioHandler.outputs[i]));
+            bindings.AddBinding(Convert.ToByte(i + 48), new Binding(Binding.AudioAction.Mute, windowsAudioHandler.outputs[i]));
+        }
+        bindings.AddBinding(43, new Binding(Binding.AudioAction.PreviousTrack));
+        bindings.AddBinding(44, new Binding(Binding.AudioAction.NextTrack));
+        bindings.AddBinding(42, new Binding(Binding.AudioAction.Stop));
+        bindings.AddBinding(41, new Binding(Binding.AudioAction.PlayPause));
+        Console.WriteLine(bindings);
     }
 }
