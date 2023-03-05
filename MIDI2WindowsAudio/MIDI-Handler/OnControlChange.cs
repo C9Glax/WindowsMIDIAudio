@@ -4,19 +4,19 @@ namespace MIDI_Handler;
 
 public class ControlChangeEventArgs : EventArgs
 {
-    public ControlChangeEventArgs(ControlType controlType, SevenBitNumber controlNumber, byte groupNumber, SevenBitNumber value)
+    public ControlChangeEventArgs(ControlType controlType, SevenBitNumber absoluteControlNumber, byte groupNumber, SevenBitNumber value)
     {
         this.controlType = controlType;
-        this.controlNumber = controlNumber;
+        this.absoluteControlNumber = absoluteControlNumber;
         this.groupNumber = groupNumber;
         this.value = value;
         this.controlButtonName = null;
     }
         
-    public ControlChangeEventArgs(ControlType controlType, SevenBitNumber controlNumber, byte groupNumber, SevenBitNumber value, ControlButtonName controlButtonName)
+    public ControlChangeEventArgs(ControlType controlType, SevenBitNumber absoluteControlNumber, byte groupNumber, SevenBitNumber value, ControlButtonName controlButtonName)
     {
         this.controlType = controlType;
-        this.controlNumber = controlNumber;
+        this.absoluteControlNumber = absoluteControlNumber;
         this.groupNumber = groupNumber;
         this.value = value;
         this.controlButtonName = controlButtonName;
@@ -24,13 +24,13 @@ public class ControlChangeEventArgs : EventArgs
 
     public override string ToString()
     {
-        return string.Format("{0} absoluteNumber: {1} localNumber: {2} value: {3} name?: {4}", controlType, controlNumber.ToString(), groupNumber.ToString(), value.ToString(),
+        return string.Format("{0} absoluteNumber: {1} localNumber: {2} value: {3} name?: {4}", controlType, absoluteControlNumber.ToString(), groupNumber.ToString(), value.ToString(),
             // ReSharper disable once HeapView.BoxingAllocation
             controlButtonName != null ? controlButtonName : "");
     }
 
     public ControlType controlType { get; }
-    public SevenBitNumber controlNumber { get; }
+    public SevenBitNumber absoluteControlNumber { get; }
     public byte groupNumber { get; }
     public SevenBitNumber value { get; }
         
