@@ -36,7 +36,6 @@ public class AudioController
     {
         this.SetVolume(data.MasterVolume);
         this.SetMute(data.Muted);
-        OnStateChanged?.Invoke(this);
     }
 
     public AudioController(AudioSessionControl2 session)
@@ -56,7 +55,6 @@ public class AudioController
     {
         this.SetVolume(newVolume);
         this.SetMute(newMute);
-        OnStateChanged?.Invoke(this);
     }
 
     public void SetVolume(float newVolume)
