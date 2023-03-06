@@ -29,12 +29,12 @@ public class ControlChangeEventArgs : EventArgs
             controlButtonName != null ? controlButtonName : "");
     }
 
-    public ControlType controlType { get; }
+    private ControlType controlType { get; }
     public SevenBitNumber absoluteControlNumber { get; }
     public byte groupNumber { get; }
     public SevenBitNumber value { get; }
         
-    public ControlButtonName? controlButtonName { get; }
+    private ControlButtonName? controlButtonName { get; }
     public enum ControlType
     {
         Fader, Knob, RecordButton, MuteButton, SoloButton, ControlButton

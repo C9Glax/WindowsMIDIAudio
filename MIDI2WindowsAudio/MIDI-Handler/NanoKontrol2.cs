@@ -105,4 +105,10 @@ public class NanoKontrol2
             throw new Exception($"Event not recognised: {eventArgs.Event}");
         }
     }
+
+    public void Dispose()
+    {
+        midiIn.StopEventsListening();
+        midiIn.Dispose();
+    }
 }

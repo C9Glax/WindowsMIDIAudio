@@ -1,5 +1,4 @@
-﻿using Audio_Handler;
-using MIDI_Handler;
+﻿using Korg2Audio;
 
 namespace KorgNanokontrol2MWAudio;
 
@@ -7,13 +6,14 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        new Program();
+        var _ = new Program();
     }
 
-    public Program()
+    private Program()
     {
-        Korg2Audio k2a = new Korg2Audio();
-        k2a.OnNanoKontrol2Event += (sender, eventargs) => Console.WriteLine($"{eventargs}");
-        k2a.OnAudioControllerStateChanged += sender => Console.WriteLine(sender);
+        // ReSharper disable once InconsistentNaming
+        KorgAndAudioKonnector k2a = new KorgAndAudioKonnector();
+        k2a.OnNanoKontrol2Event += (_, eventArgs) => Console.WriteLine($"{eventArgs}");
+        k2a.OnAudioControllerStateChanged += Console.WriteLine;
     }
 }

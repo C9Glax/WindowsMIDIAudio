@@ -1,21 +1,22 @@
 ﻿using Audio_Handler;
 using MIDI_Handler;
 
-namespace KorgNanokontrol2MWAudio;
+namespace Korg2Audio;
 
-public class Korg2Audio
+public class KorgAndAudioKonnector
 {
 
+    // ReSharper disable once InconsistentNaming
     public bool KeepRunning = true;
-    private WindowsAudioHandler windowsAudioHandler;
-    private NanoKontrol2 nanoKontrol2;
+    private readonly WindowsAudioHandler windowsAudioHandler;
+    private readonly NanoKontrol2 nanoKontrol2;
     public Bindings bindings { get; }
     public delegate void WindowsAudioControllerStateChangedEventHandler(AudioController sender);
     public event WindowsAudioControllerStateChangedEventHandler? OnAudioControllerStateChanged;
     
-    public delegate void NanoKontrol2EventEventHandler(object sender, ControlChangeEventArgs eventargs);
+    public delegate void NanoKontrol2EventEventHandler(object sender, ControlChangeEventArgs eventArgs);
     public event NanoKontrol2EventEventHandler? OnNanoKontrol2Event;
-    public Korg2Audio()
+    public KorgAndAudioKonnector()
     {
         nanoKontrol2 = MidiHandler.GetNanoKontrol2();
         nanoKontrol2.OnControlChange += Nk2ControlEventHandler;
@@ -35,10 +36,24 @@ public class Korg2Audio
         OnAudioControllerStateChanged?.Invoke(sender);
     }
 
-    private void Nk2ControlEventHandler(object sender, ControlChangeEventArgs eventargs)
+    private void Nk2ControlEventHandler(object sender, ControlChangeEventArgs eventArgs)
     {
-        bindings.ExecuteControllerBinding(Convert.ToByte(eventargs.absoluteControlNumber), Convert.ToByte(eventargs.value));
-        OnNanoKontrol2Event?.Invoke(sender, eventargs);
+        if (bindings.ExecuteControllerBinding(Convert.ToByte(eventArgs.absoluteControlNumber),
+                Convert.ToByte(eventArgs.value)) == Bindings.ControllerActions.Solo)
+        {
+            for (byte i = 0; i < bindings.groupAssignment.Length; i++)
+            {
+                if (i != eventArgs.groupNumber)
+                {
+                    bindings.groupAssignment[i]?.SetSoloMute(eventArgs.value != 0);
+                }
+                else
+                {
+                    bindings.groupAssignment[i]?.SetSoloMute(false);
+                }
+            }
+        }
+        OnNanoKontrol2Event?.Invoke(sender, eventArgs);
     }
 
     private void RunThreadRun()
@@ -52,6 +67,8 @@ public class Korg2Audio
     public void Dispose()
     {
         KeepRunning = false;
+        nanoKontrol2.Dispose();
+        windowsAudioHandler.Dispose();
     }
 
     public void SetBindingsForGroup(byte group, AudioController audioController)

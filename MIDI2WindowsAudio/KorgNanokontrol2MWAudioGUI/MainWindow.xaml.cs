@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
 using Audio_Handler;
-using KorgNanokontrol2MWAudio;
-using MIDI_Handler;
-using Color = System.Drawing.Color;
+using Korg2Audio;
 
 namespace KorgNanokontrol2MWAudioGUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class MainWindow
     {
-        private static Brush ButtonPressed = Brushes.Red;
-        private static Brush ButtonNotPressed = Brushes.White;
-        private Korg2Audio k2a;
+        private static Brush _buttonPressed = Brushes.Red;
+        private static Brush _buttonNotPressed = Brushes.White;
+        // ReSharper disable once InconsistentNaming
+        private KorgAndAudioKonnector? k2a;
         
         public MainWindow()
         {
@@ -34,7 +31,7 @@ namespace KorgNanokontrol2MWAudioGUI
         {
             Dispatcher.Invoke(() =>
             {
-                ConsoleOutput.AppendText($"{e.text}\n");
+                ConsoleOutput.AppendText($"\n{e.text}");
                 ConsoleOutput.ScrollToLine(ConsoleOutput.LineCount - 1);
             });
         }
@@ -42,13 +39,13 @@ namespace KorgNanokontrol2MWAudioGUI
         public void AfterInit(object? sender, EventArgs eventArgs)
         {
             Console.WriteLine("Initialized Window");
-            k2a = new Korg2Audio();
+            k2a = new KorgAndAudioKonnector();
             k2a.OnAudioControllerStateChanged += K2aOnOnAudioControllerStateChanged;
             for (byte i = 0; i < k2a.bindings.groupAssignment.Length; i++)
             {
                 if (k2a.bindings.groupAssignment[i] is not null)
                 {
-                    AudioController audioController = k2a.bindings.groupAssignment[i];
+                    AudioController audioController = k2a.bindings.groupAssignment[i]!;
                     UpdateAudioGroup(i, audioController.name, audioController.soloMute, audioController.mute, false, audioController.volume);
                 }
             }
@@ -56,14 +53,15 @@ namespace KorgNanokontrol2MWAudioGUI
 
         private void K2aOnOnAudioControllerStateChanged(AudioController sender)
         {
-            for (byte i = 0; i < k2a.bindings.groupAssignment.Length; i++)
-            {
-                if (k2a.bindings.groupAssignment[i] is not null && k2a.bindings.groupAssignment[i] == sender)
+            if (k2a != null)
+                for (byte i = 0; i < k2a.bindings.groupAssignment.Length; i++)
                 {
-                    UpdateAudioGroup(i, sender.name, sender.soloMute, sender.mute, false, sender.volume);
-                    break;
+                    if (k2a.bindings.groupAssignment[i] is not null && k2a.bindings.groupAssignment[i] == sender)
+                    {
+                        UpdateAudioGroup(i, sender.name, sender.soloMute, sender.mute, false, sender.volume);
+                        break;
+                    }
                 }
-            }
         }
 
         private void UpdateAudioGroup(byte groupNumber, string name, bool soloMuted, bool muted, bool record, float volume)
@@ -78,10 +76,28 @@ namespace KorgNanokontrol2MWAudioGUI
                 Button recordButton = (Button)((StackPanel)group.Children[1]).Children[2];
                 Slider volumeSlider = (Slider)group.Children[2];
                 nameLabel.Content = name;
-                soloButton.Background = soloMuted ? ButtonPressed : ButtonNotPressed;
-                muteButton.Background = muted ? ButtonPressed : ButtonNotPressed;
+                soloButton.Background = soloMuted ? _buttonPressed : _buttonNotPressed;
+                muteButton.Background = muted ? _buttonPressed : _buttonNotPressed;
                 volumeSlider.Value = Math.Abs(volume * 100);
             });
+        }
+
+        private void OnClickRestart(object sender, RoutedEventArgs routedEventArgs)
+        {
+            ConsoleOutput.Text = "";
+            Console.WriteLine("Restarting");
+            k2a?.Dispose();
+            k2a = new KorgAndAudioKonnector();
+            k2a.OnAudioControllerStateChanged += K2aOnOnAudioControllerStateChanged;
+            for (byte i = 0; i < k2a.bindings.groupAssignment.Length; i++)
+            {
+                if (k2a.bindings.groupAssignment[i] is not null)
+                {
+                    AudioController audioController = k2a.bindings.groupAssignment[i]!;
+                    UpdateAudioGroup(i, audioController.name, audioController.soloMute, audioController.mute, false, audioController.volume);
+                }
+            }
+            Console.WriteLine("Restarted");
         }
     }
 }

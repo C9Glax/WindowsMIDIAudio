@@ -1,6 +1,7 @@
 ﻿using Audio_Handler;
+using MIDI_Handler;
 
-namespace KorgNanokontrol2MWAudio;
+namespace Korg2Audio;
 
 public class Bindings
 {
@@ -29,9 +30,9 @@ public class Bindings
         controlBindings.Add(controlAbsoluteNumber, new ControllerAction(controllerAction, audioController));
     }
 
-    public void ExecuteControllerBinding(byte controlAbsoluteNumber, byte value)
+    public ControllerActions? ExecuteControllerBinding(byte controlAbsoluteNumber, byte value)
     {
-        controlBindings[controlAbsoluteNumber]?.Execute(value);
+        return controlBindings[controlAbsoluteNumber]?.Execute(value);
     }
     
     public override string ToString()
@@ -50,8 +51,8 @@ public class Bindings
 
     private class ControllerAction
     {
-        private ControllerActions controllerActionToExecute;
-        private AudioController? audioController;
+        private readonly ControllerActions controllerActionToExecute;
+        private readonly AudioController? audioController;
 
         public ControllerAction(ControllerActions controllerAction, AudioController? audioController)
         {
@@ -59,7 +60,7 @@ public class Bindings
             this.audioController = audioController;
         }
 
-        public void Execute(byte value)
+        public ControllerActions? Execute(byte value)
         {
             switch (controllerActionToExecute)
             {
@@ -76,14 +77,13 @@ public class Bindings
                     MediaController.PlayPause();
                     break;
                 case ControllerActions.SetVolume:
-                    audioController.SetVolume(value / 127f); //TODO type check
+                    audioController?.SetVolume(value / NanoKontrol2.MaxValue); //TODO type check
                     break;
                 case ControllerActions.Mute:
-                    audioController.SetMute(value != 0); //TODO type check
+                    audioController?.SetMute(value != 0); //TODO type check
                     break;
                 case ControllerActions.Solo:
-                    throw new NotImplementedException(); //TODO
-                    break;
+                    return controllerActionToExecute;
                 case ControllerActions.Record:
                     throw new NotImplementedException(); //TODO
                     break;
@@ -94,6 +94,8 @@ public class Bindings
                     throw new NotImplementedException(); //TODO
                     break;
             }
+
+            return null;
         }
 
         public override string ToString()

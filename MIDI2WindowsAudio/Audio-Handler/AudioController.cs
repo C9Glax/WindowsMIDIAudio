@@ -1,20 +1,20 @@
-﻿using System.Diagnostics;
+﻿using System.Globalization;
 using CoreAudio;
 
 namespace Audio_Handler;
 
 public class AudioController
 {
-    private object volumeController;
-    private bool isDevice = false;
-    private bool isSession = false;
+    private readonly object volumeController;
+    private readonly bool isDevice;
+    private readonly bool isSession;
     
     public float volume { get; private set; }
     public bool mute { get; private set; }
     public bool soloMute { get; private set; }
     public string name { get; private set; }
     
-    public string ID { get; }
+    public string id { get; }
     
     public delegate void StateChangedEventHandler(AudioController sender);
 
@@ -28,7 +28,7 @@ public class AudioController
         soloMute = false;
         isDevice = true;
         name = device.DeviceFriendlyName;
-        ID = device.ID;
+        id = device.ID;
         device.AudioEndpointVolume.OnVolumeNotification += DeviceVolumeChangeHandler;
     }
 
@@ -46,9 +46,9 @@ public class AudioController
         soloMute = false;
         isSession = true;
         name = session.DisplayName != "" ? session.DisplayName : session.ProcessID.ToString();
-        ID = session.ProcessID.ToString();
+        id = session.ProcessID.ToString();
         session.OnSimpleVolumeChanged += SessionVolumeChangeHandler;
-        session.OnDisplayNameChanged += (sender, displayName) => name = displayName;
+        session.OnDisplayNameChanged += (_, displayName) => name = displayName;
     }
 
     private void SessionVolumeChangeHandler(object sender, float newVolume, bool newMute)
@@ -110,6 +110,10 @@ public class AudioController
 
     public override string ToString()
     {
-        return $"{name.PadLeft(40).Substring(0,40)} - Mute (D/S): ({(mute ? "T" : "F")}/{(soloMute ? "T" : "F")}) Vol: {(volume * 100).ToString().PadLeft(5).Substring(0,5)} {(isSession ? "Session" : "")}{(isDevice ? "Device" : "")}";
+        return
+            $"{name.PadLeft(40).Substring(0, 40)} - " +
+            $"Mute (D/S): ({(mute ? "T" : "F")}/{(soloMute ? "T" : "F")}) " +
+            $"Vol: {(volume * 100).ToString(CultureInfo.InvariantCulture).PadLeft(5).Substring(0, 5)} " +
+            $"{(isSession ? "Session" : "")}{(isDevice ? "Device" : "")}";
     }
 }
