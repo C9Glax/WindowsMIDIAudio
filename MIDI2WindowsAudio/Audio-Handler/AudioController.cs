@@ -1,4 +1,5 @@
-﻿using CoreAudio;
+﻿using System.Diagnostics;
+using CoreAudio;
 
 namespace Audio_Handler;
 
@@ -11,7 +12,7 @@ public class AudioController
     public float volume { get; private set; }
     public bool mute { get; private set; }
     public bool soloMute { get; private set; }
-    public string name { get; }
+    public string name { get; private set; }
     
     public string ID { get; }
     
@@ -23,7 +24,7 @@ public class AudioController
     {
         volumeController = device.AudioEndpointVolume!;
         mute = device.AudioEndpointVolume!.Mute;
-        volume = device.AudioEndpointVolume!.MasterVolumeLevel;
+        volume = device.AudioEndpointVolume!.MasterVolumeLevel / 100;
         soloMute = false;
         isDevice = true;
         name = device.DeviceFriendlyName;
@@ -45,9 +46,10 @@ public class AudioController
         volume = session.SimpleAudioVolume!.MasterVolume;
         soloMute = false;
         isSession = true;
-        name = session.DisplayName;
+        name = session.DisplayName != "" ? session.DisplayName : session.ProcessID.ToString();
         ID = session.ProcessID.ToString();
         session.OnSimpleVolumeChanged += SessionVolumeChangeHandler;
+        session.OnDisplayNameChanged += (sender, displayName) => name = displayName;
     }
 
     private void SessionVolumeChangeHandler(object sender, float newVolume, bool newMute)
@@ -61,7 +63,7 @@ public class AudioController
     {
         if (isDevice)
         {
-            ((AudioEndpointVolume)volumeController).MasterVolumeLevel = newVolume;
+            ((AudioEndpointVolume)volumeController).MasterVolumeLevelScalar = newVolume;
             volume = newVolume;
         }else if (isSession)
         {
@@ -108,13 +110,8 @@ public class AudioController
         OnStateChanged?.Invoke(this);
     }
 
-    public void InvokeStateChange()
-    {
-        OnStateChanged?.Invoke(this);
-    }
-
     public override string ToString()
     {
-        return $"{name.PadRight(40).Substring(0, 40)} - Mute (D/S): ({mute}/{soloMute}) Vol: {volume} {(isSession ? "Session" : "")}{(isDevice ? "Device" : "")}";
+        return $"{name.PadLeft(40).Substring(0,40)} - Mute (D/S): ({(mute ? "T" : "F")}/{(soloMute ? "T" : "F")}) Vol: {(volume * 100).ToString().PadLeft(5).Substring(0,5)} {(isSession ? "Session" : "")}{(isDevice ? "Device" : "")}";
     }
 }
