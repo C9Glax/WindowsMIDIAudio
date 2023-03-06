@@ -54,16 +54,22 @@ public class Korg2Audio
         KeepRunning = false;
     }
 
+    public void SetBindingsForGroup(byte group, AudioController audioController)
+    {
+        bindings.AddControlBinding(Convert.ToByte(group + 00), Bindings.ControllerActions.SetVolume, audioController);
+        //bindings.AddControlBinding(Convert.ToByte(i + 16), Bindings.ControllerActions.SetVolume, controllers[group]);
+        bindings.AddControlBinding(Convert.ToByte(group + 32), Bindings.ControllerActions.Solo, audioController);
+        bindings.AddControlBinding(Convert.ToByte(group + 48), Bindings.ControllerActions.Mute, audioController);
+        //bindings.AddControlBinding(Convert.ToByte(group + 48), Bindings.ControllerActions.Record, controllers[group]);
+        bindings.SetGroup(audioController, group);
+    }
+
     private void SampleBindings()
     {
-        AudioController[] controllers = windowsAudioHandler.controllers.ToArray();
+        AudioController[] controllers = windowsAudioHandler.controllers.Where(controller => !controller.name.All(char.IsDigit)).ToArray();
         for (byte i = 0; i < 8 && i < controllers.Length; i++)
         {
-            bindings.AddControlBinding(Convert.ToByte(i + 00), Bindings.ControllerActions.SetVolume, controllers[i]);
-            //bindings.AddControlBinding(Convert.ToByte(i + 16), Bindings.ControllerActions.SetVolume, controllers[i]);
-            bindings.AddControlBinding(Convert.ToByte(i + 32), Bindings.ControllerActions.Solo, controllers[i]);
-            bindings.AddControlBinding(Convert.ToByte(i + 48), Bindings.ControllerActions.Mute, controllers[i]);
-            //bindings.AddControlBinding(Convert.ToByte(i + 48), Bindings.ControllerActions.Record, controllers[i]);
+            SetBindingsForGroup(i, controllers[i]);
         }
         bindings.AddControlBinding(41, Bindings.ControllerActions.PlayPause, null);
         bindings.AddControlBinding(42, Bindings.ControllerActions.Stop, null);
