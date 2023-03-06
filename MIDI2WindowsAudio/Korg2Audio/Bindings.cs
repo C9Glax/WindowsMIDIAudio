@@ -65,16 +65,20 @@ public class Bindings
             switch (controllerActionToExecute)
             {
                 case ControllerActions.Stop:
-                    MediaController.Stop();
+                    if(value != 0)
+                        MediaController.Stop();
                     break;
                 case ControllerActions.Previous:
-                    MediaController.Previous();
+                    if(value != 0)
+                        MediaController.Previous();
                     break;
                 case ControllerActions.Next:
-                    MediaController.Next();
+                    if(value != 0)
+                        MediaController.Next();
                     break;
                 case ControllerActions.PlayPause:
-                    MediaController.PlayPause();
+                    if(value != 0)
+                        MediaController.PlayPause();
                     break;
                 case ControllerActions.SetVolume:
                     audioController?.SetVolume(value / NanoKontrol2.MaxValue); //TODO type check
