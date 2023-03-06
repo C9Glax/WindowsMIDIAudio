@@ -52,8 +52,13 @@ public class WindowsAudioHandler
 
         foreach (AudioController audioController in controllers)
         {
-            audioController.OnStateChanged += sender => OnAudioControllerStateChanged?.Invoke(sender);
+            audioController.OnStateChanged += AudioControllerOnStateChanged;
         }
+    }
+
+    private void AudioControllerOnStateChanged(AudioController sender)
+    {
+        OnAudioControllerStateChanged?.Invoke(sender);
     }
 
     private void SessionStateChangedHandler(object sender, AudioSessionState newstate)
@@ -78,7 +83,7 @@ public class WindowsAudioHandler
         string ret = $"[WindowsAudioHandler] {controllers.Count} Controllers:";
         foreach (AudioController audioController in controllers)
         {
-            ret += $"\n{audioController.ToString()}";
+            ret += $"\n{audioController}";
         }
         return ret;
     }

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>KorgNanokontrol2MWAudio</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Audio-Handler\Audio-Handler.csproj" />
+      <ProjectReference Include="..\Korg2Audio\Korg2Audio.csproj" />
+      <ProjectReference Include="..\MIDI-Handler\MIDI-Handler.csproj" />
+    </ItemGroup>
+
+</Project>
