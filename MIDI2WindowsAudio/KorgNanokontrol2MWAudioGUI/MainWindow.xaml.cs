@@ -78,7 +78,7 @@ namespace KorgNanokontrol2MWAudioGUI
                 Button recordButton = (Button)((StackPanel)group.Children[1]).Children[2];
                 Slider volumeSlider = (Slider)group.Children[2];
                 nameLabel.Content = name;
-                soloButton.Background = !soloMuted ? ButtonPressed : ButtonNotPressed;
+                soloButton.Background = soloMuted ? ButtonPressed : ButtonNotPressed;
                 muteButton.Background = muted ? ButtonPressed : ButtonNotPressed;
                 volumeSlider.Value = Math.Abs(volume * 100);
             });
