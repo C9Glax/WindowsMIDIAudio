@@ -93,7 +93,7 @@ public class KorgAndAudioKonnector
         bindings.AddControlBinding(43, Bindings.ControllerActions.Previous, null);
         bindings.AddControlBinding(44, Bindings.ControllerActions.Next, null);
 
-        for (byte i = 0; i < bindings.groupAssignment.Length; i++)
+        for (byte i = 0; i < bindings.groupAssignment.Length && i < controllers.Length; i++)
         {
             bindings.SetGroup(controllers[i], i);
         }
