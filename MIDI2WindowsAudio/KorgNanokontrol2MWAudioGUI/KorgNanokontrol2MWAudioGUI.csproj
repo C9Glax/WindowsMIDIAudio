@@ -8,7 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\KorgNanokontrol2MWAudioConsole\KorgNanokontrol2MWAudioConsole.csproj" />
+      <ProjectReference Include="..\Audio-Handler\Audio-Handler.csproj" />
+      <ProjectReference Include="..\Korg2Audio\Korg2Audio.csproj" />
+      <ProjectReference Include="..\MIDI-Handler\MIDI-Handler.csproj" />
     </ItemGroup>
 
 </Project>
