@@ -8,7 +8,6 @@ public class ConsoleWriter : TextWriter
 {
     public override Encoding Encoding { get; }
     public event EventHandler<ConsoleWriterEventArgs>? OnWrite;
-    public event EventHandler<ConsoleWriterEventArgs>? OnWriteLine;
 
     public ConsoleWriter()
     {

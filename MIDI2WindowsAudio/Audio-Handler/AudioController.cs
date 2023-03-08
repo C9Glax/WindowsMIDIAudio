@@ -11,7 +11,7 @@ public class AudioController
     
     public AudioController? parentDeviceController { get; }
 
-    private HashSet<AudioController>? childrenSessionControllers;
+    private readonly HashSet<AudioController>? childrenSessionControllers;
     
     public float volume { get; private set; }
     public bool mute { get; private set; }

@@ -12,7 +12,7 @@ public class WindowsAudioHandler
     public delegate void AudioControllerRemovedEventHandler(AudioController removed);
     public event AudioControllerRemovedEventHandler? OnAudioControllerRemoved;
     public delegate void AudioControllerAddedEventHandler(AudioController removed);
-    public event AudioControllerAddedEventHandler? OnAudioControllerAdded;
+    public event AudioControllerAddedEventHandler? OnAudioControllerAdded; //TODO
     
     public WindowsAudioHandler()
     {

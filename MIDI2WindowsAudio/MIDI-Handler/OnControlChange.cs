@@ -47,7 +47,8 @@ public class ControlChangeEventArgs : EventArgs
 
     public enum ControlButtonName
     {
-        PrevTrack, NextTrack, Cycle, SetMarker, PrevMarker, NextMarker, Previous, Next, Stop, PlayPause, Record, NULL
+        // ReSharper disable once InconsistentNaming
+        PrevTrack, NextTrack, Cycle, SetMarker, PrevMarker, NextMarker, Previous, Next, Stop, PlayPause, Record, NULL//NULL should never be actively used
     }
 }
 

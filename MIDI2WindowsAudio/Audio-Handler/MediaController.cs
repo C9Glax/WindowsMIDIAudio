@@ -6,6 +6,7 @@ namespace Audio_Handler;
 public static class MediaController
 {
     [DllImport("user32.dll")]
+    // ReSharper disable once IdentifierTypo
     private static extern void keybd_event(byte virtualKey, byte scanCode, uint flags, IntPtr extraInfo);
     private const int KeyEventFExtendedKey = 1;
     //private const int KeyEventFKeyup = 0;

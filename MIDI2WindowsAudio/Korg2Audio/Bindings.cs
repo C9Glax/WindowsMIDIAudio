@@ -5,7 +5,7 @@ namespace Korg2Audio;
 
 public class Bindings
 {
-    private readonly Dictionary<byte, ControllerAction> controlBindings;
+    private readonly Dictionary<byte, ControllerAction?> controlBindings;
     public AudioController?[] groupAssignment { get; }
 
     public Bindings()
@@ -41,10 +41,9 @@ public class Bindings
     public override string ToString()
     {
         string ret = $"[Controller Bindings] {controlBindings.Count}";
-        foreach (KeyValuePair<byte, ControllerAction> kv in controlBindings)
+        foreach (KeyValuePair<byte, ControllerAction?> kv in controlBindings)
         {
-            ret += $"\n{kv.Key.ToString().PadLeft(3).Substring(0,3)} {kv.Value}";
-            
+            ret += $"\n{kv.Key.ToString().PadLeft(3)[..3]} {kv.Value}";
         }
         //TODO audioBindings
         return ret;
