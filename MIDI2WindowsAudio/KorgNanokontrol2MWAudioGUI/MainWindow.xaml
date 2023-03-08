@@ -8,12 +8,16 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <Grid Width="60" Margin="5 10" x:Name="Group0" Background="LightGray">
-                <Label Margin="-2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Label.LayoutTransform>
-                    Device0
-                </Label>
+                <ComboBox Width="250" Height="27" Margin="2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening">
+                    <ComboBox.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </ComboBox.LayoutTransform>
+                    <ComboBoxItem IsSelected="True">
+                        <Label>
+                            Device
+                        </Label>
+                    </ComboBoxItem>
+                </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
                     <Button Width="25" Height="25" Margin="5 5 0 5">S</Button>
                     <Button Width="25" Height="25" Margin="5 5 0 5">M</Button>
@@ -22,12 +26,16 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="60" Margin="5 10" x:Name="Group1" Background="LightGray">
-                <Label Margin="-2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Label.LayoutTransform>
-                    Device1
-                </Label>
+                <ComboBox Width="250" Height="27" Margin="2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening">
+                    <ComboBox.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </ComboBox.LayoutTransform>
+                    <ComboBoxItem IsSelected="True">
+                        <Label>
+                            Device
+                        </Label>
+                    </ComboBoxItem>
+                </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
                     <Button Width="25" Height="25" Margin="5 5 0 5">S</Button>
                     <Button Width="25" Height="25" Margin="5 5 0 5">M</Button>
@@ -36,12 +44,16 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="60" Margin="5 10" x:Name="Group2" Background="LightGray">
-                <Label Margin="-2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Label.LayoutTransform>
-                    Device2
-                </Label>
+                <ComboBox Width="250" Height="27" Margin="2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening">
+                    <ComboBox.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </ComboBox.LayoutTransform>
+                    <ComboBoxItem IsSelected="True">
+                        <Label>
+                            Device
+                        </Label>
+                    </ComboBoxItem>
+                </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
                     <Button Width="25" Height="25" Margin="5 5 0 5">S</Button>
                     <Button Width="25" Height="25" Margin="5 5 0 5">M</Button>
@@ -50,12 +62,16 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="60" Margin="5 10" x:Name="Group3" Background="LightGray">
-                <Label Margin="-2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Label.LayoutTransform>
-                    Device3
-                </Label>
+                <ComboBox Width="250" Height="27" Margin="2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening">
+                    <ComboBox.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </ComboBox.LayoutTransform>
+                    <ComboBoxItem IsSelected="True">
+                        <Label>
+                            Device
+                        </Label>
+                    </ComboBoxItem>
+                </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
                     <Button Width="25" Height="25" Margin="5 5 0 5">S</Button>
                     <Button Width="25" Height="25" Margin="5 5 0 5">M</Button>
@@ -64,12 +80,16 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="60" Margin="5 10" x:Name="Group4" Background="LightGray">
-                <Label Margin="-2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Label.LayoutTransform>
-                    Device4
-                </Label>
+                <ComboBox Width="250" Height="27" Margin="2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening">
+                    <ComboBox.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </ComboBox.LayoutTransform>
+                    <ComboBoxItem IsSelected="True">
+                        <Label>
+                            Device
+                        </Label>
+                    </ComboBoxItem>
+                </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
                     <Button Width="25" Height="25" Margin="5 5 0 5">S</Button>
                     <Button Width="25" Height="25" Margin="5 5 0 5">M</Button>
@@ -78,12 +98,16 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="60" Margin="5 10" x:Name="Group5" Background="LightGray">
-                <Label Margin="-2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Label.LayoutTransform>
-                    Device5
-                </Label>
+                <ComboBox Width="250" Height="27" Margin="2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening">
+                    <ComboBox.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </ComboBox.LayoutTransform>
+                    <ComboBoxItem IsSelected="True">
+                        <Label>
+                            Device
+                        </Label>
+                    </ComboBoxItem>
+                </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
                     <Button Width="25" Height="25" Margin="5 5 0 5">S</Button>
                     <Button Width="25" Height="25" Margin="5 5 0 5">M</Button>
@@ -92,12 +116,16 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="60" Margin="5 10" x:Name="Group6" Background="LightGray">
-                <Label Margin="-2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Label.LayoutTransform>
-                    Device6
-                </Label>
+                <ComboBox Width="250" Height="27" Margin="2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening">
+                    <ComboBox.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </ComboBox.LayoutTransform>
+                    <ComboBoxItem IsSelected="True">
+                        <Label>
+                            Device
+                        </Label>
+                    </ComboBoxItem>
+                </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
                     <Button Width="25" Height="25" Margin="5 5 0 5">S</Button>
                     <Button Width="25" Height="25" Margin="5 5 0 5">M</Button>
@@ -106,12 +134,16 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="60" Margin="5 10" x:Name="Group7" Background="LightGray">
-                <Label Margin="-2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <Label.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Label.LayoutTransform>
-                    Device7
-                </Label>
+                <ComboBox Width="250" Height="27" Margin="2 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening">
+                    <ComboBox.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </ComboBox.LayoutTransform>
+                    <ComboBoxItem IsSelected="True">
+                        <Label>
+                            Device
+                        </Label>
+                    </ComboBoxItem>
+                </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Vertical">
                     <Button Width="25" Height="25" Margin="5 5 0 5">S</Button>
                     <Button Width="25" Height="25" Margin="5 5 0 5">M</Button>

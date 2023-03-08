@@ -27,7 +27,10 @@ public class Bindings
 
     public void AddControlBinding(byte controlAbsoluteNumber, ControllerActions controllerAction, AudioController? audioController)
     {
-        controlBindings.Add(controlAbsoluteNumber, new ControllerAction(controllerAction, audioController));
+        if (!controlBindings.TryAdd(controlAbsoluteNumber, new ControllerAction(controllerAction, audioController)))
+        {
+            controlBindings[controlAbsoluteNumber] = new ControllerAction(controllerAction, audioController);
+        }
     }
 
     public ControllerActions? ExecuteControllerBinding(byte controlAbsoluteNumber, byte value)

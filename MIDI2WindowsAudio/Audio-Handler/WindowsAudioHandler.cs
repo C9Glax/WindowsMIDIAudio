@@ -18,44 +18,48 @@ public class WindowsAudioHandler
     {
         Guid guid = Guid.NewGuid();
         MMDeviceCollection mmOutputs = new MMDeviceEnumerator(guid).EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
-        MMDeviceCollection mmInputs = new MMDeviceEnumerator(guid).EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
+        //MMDeviceCollection mmInputs = new MMDeviceEnumerator(guid).EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
 
         controllers = new();
         foreach (MMDevice dev in mmOutputs)
         {
-            AudioController newController = new AudioController(dev);
-            controllers.Add(newController);
+            AudioController deviceController = new AudioController(dev);
+            controllers.Add(deviceController);
             if (dev.AudioSessionManager2 != null)
             {
                 dev.AudioSessionManager2.OnSessionCreated += NewSessionCreatedHandler;
-                foreach (AudioSessionControl2 session in dev.AudioSessionManager2.Sessions!)
+                foreach (AudioSessionControl2 audioSessionControl2 in dev.AudioSessionManager2.Sessions!)
                 {
-                    if (!session.IsSystemSoundsSession)
+                    if (!audioSessionControl2.IsSystemSoundsSession)
                     {
-                        controllers.Add(new AudioController(session));
-                        session.OnStateChanged += SessionStateChangedHandler;
+                        AudioController sessionController = new AudioController(audioSessionControl2, deviceController);
+                        controllers.Add(sessionController);
+                        deviceController.AddSession(sessionController);
+                        audioSessionControl2.OnStateChanged += SessionStateChangedHandler;
                     }
                 }
             }
         }
-        
+        /*
         foreach (MMDevice dev in mmInputs)
         {
-            AudioController newController = new AudioController(dev);
-            controllers.Add(newController);
+            AudioController deviceController = new AudioController(dev);
+            controllers.Add(deviceController);
             if (dev.AudioSessionManager2 != null)
             {
                 dev.AudioSessionManager2.OnSessionCreated += NewSessionCreatedHandler;
-                foreach (AudioSessionControl2 session in dev.AudioSessionManager2.Sessions!)
+                foreach (AudioSessionControl2 audioSessionControl2 in dev.AudioSessionManager2.Sessions!)
                 {
-                    if (!session.IsSystemSoundsSession)
+                    if (!audioSessionControl2.IsSystemSoundsSession)
                     {
-                        controllers.Add(new AudioController(session));
-                        session.OnStateChanged += SessionStateChangedHandler;
+                        AudioController sessionController = new AudioController(audioSessionControl2, deviceController);
+                        controllers.Add(sessionController);
+                        deviceController.AddSession(sessionController);
+                        audioSessionControl2.OnStateChanged += SessionStateChangedHandler;
                     }
                 }
             }
-        }
+        }*/
 
         foreach (AudioController audioController in controllers)
         {

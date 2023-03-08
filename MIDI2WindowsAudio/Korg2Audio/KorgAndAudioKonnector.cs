@@ -8,8 +8,8 @@ public class KorgAndAudioKonnector
 
     // ReSharper disable once InconsistentNaming
     public bool KeepRunning = true;
-    private readonly WindowsAudioHandler windowsAudioHandler;
-    private readonly NanoKontrol2 nanoKontrol2;
+    public readonly WindowsAudioHandler windowsAudioHandler;
+    public readonly NanoKontrol2 nanoKontrol2;
     public Bindings bindings { get; }
     public delegate void WindowsAudioControllerStateChangedEventHandler(AudioController sender);
     public event WindowsAudioControllerStateChangedEventHandler? OnAudioControllerStateChanged;
@@ -38,19 +38,32 @@ public class KorgAndAudioKonnector
 
     private void Nk2ControlEventHandler(object sender, ControlChangeEventArgs eventArgs)
     {
-        if (bindings.ExecuteControllerBinding(Convert.ToByte(eventArgs.absoluteControlNumber),
-                Convert.ToByte(eventArgs.value)) == Bindings.ControllerActions.Solo)
+        Bindings.ControllerActions? actionExecuted =
+            bindings.ExecuteControllerBinding(Convert.ToByte(eventArgs.absoluteControlNumber),
+                Convert.ToByte(eventArgs.value));
+        
+        if (actionExecuted is Bindings.ControllerActions.Solo && bindings.groupAssignment[eventArgs.groupNumber] is { } soloController)
         {
-            for (byte i = 0; i < bindings.groupAssignment.Length; i++)
+            HashSet<AudioController> relatedControllers = new HashSet<AudioController>()
             {
-                if (i != eventArgs.groupNumber)
-                {
-                    bindings.groupAssignment[i]?.SetSoloMute(eventArgs.value != 0);
-                }
-                else
-                {
-                    bindings.groupAssignment[i]?.SetSoloMute(false);
-                }
+                soloController
+            };
+            if (soloController.parentDeviceController is { } parentAudioController)
+                relatedControllers.Add(parentAudioController);
+            if(soloController.isDevice)
+                foreach (AudioController audioController in soloController.GetChildSessions()!)
+                    relatedControllers.Add(audioController);
+
+            soloController.isSolo = soloController.soloMute || !soloController.isSolo;
+            foreach (AudioController audioController in relatedControllers)
+            {
+                audioController.SetSoloMute(false);
+            }
+            
+            foreach (AudioController audioController in windowsAudioHandler.controllers.Except(relatedControllers))
+            {
+                audioController.SetSoloMute(soloController.isSolo);
+                audioController.isSolo = false;
             }
         }
         OnNanoKontrol2Event?.Invoke(sender, eventArgs);

@@ -6,12 +6,17 @@ namespace Audio_Handler;
 public class AudioController
 {
     private readonly object volumeController;
-    private readonly bool isDevice;
-    private readonly bool isSession;
+    public bool isDevice { get; }
+    public bool isSession { get; }
+    
+    public AudioController? parentDeviceController { get; }
+
+    private HashSet<AudioController>? childrenSessionControllers;
     
     public float volume { get; private set; }
     public bool mute { get; private set; }
     public bool soloMute { get; private set; }
+    public bool isSolo { get; set; }
     public string name { get; private set; }
     
     public string id { get; }
@@ -29,7 +34,20 @@ public class AudioController
         isDevice = true;
         name = device.DeviceFriendlyName;
         id = device.ID;
+        parentDeviceController = null;
+        childrenSessionControllers = new HashSet<AudioController>();
         device.AudioEndpointVolume.OnVolumeNotification += DeviceVolumeChangeHandler;
+    }
+
+    public void AddSession(AudioController sessionController)
+    {
+        if (childrenSessionControllers is not null)
+            childrenSessionControllers.Add(sessionController);
+    }
+
+    public AudioController[]? GetChildSessions()
+    {
+        return this.childrenSessionControllers?.ToArray();
     }
 
     private void DeviceVolumeChangeHandler(AudioVolumeNotificationData data)
@@ -38,7 +56,7 @@ public class AudioController
         this.SetMute(data.Muted);
     }
 
-    public AudioController(AudioSessionControl2 session)
+    public AudioController(AudioSessionControl2 session, AudioController parentDeviceController)
     {
         volumeController = session.SimpleAudioVolume!;
         mute = session.SimpleAudioVolume!.Mute;
@@ -47,6 +65,8 @@ public class AudioController
         isSession = true;
         name = session.DisplayName != "" ? session.DisplayName : session.ProcessID.ToString();
         id = session.ProcessID.ToString();
+        this.parentDeviceController = parentDeviceController;
+        childrenSessionControllers = null;
         session.OnSimpleVolumeChanged += SessionVolumeChangeHandler;
         session.OnDisplayNameChanged += (_, displayName) => name = displayName;
     }
@@ -79,7 +99,7 @@ public class AudioController
 
     public void SetSoloMute(bool setSoloMute)
     {
-        this.soloMute = setSoloMute;
+        soloMute = setSoloMute;
         UpdateMuteStatus();
     }
 
