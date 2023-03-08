@@ -131,9 +131,9 @@ public class AudioController
     public override string ToString()
     {
         return
-            $"{name.PadLeft(40).Substring(0, 40)} - " +
+            $"{name.PadRight(40)[..40]} - " +
             $"Mute (D/S): ({(mute ? "T" : "F")}/{(soloMute ? "T" : "F")}) " +
-            $"Vol: {(volume * 100).ToString(CultureInfo.InvariantCulture).PadLeft(5).Substring(0, 5)} " +
+            $"Vol: {(volume * 100).ToString(CultureInfo.InvariantCulture).PadLeft(5)[..5]} " +
             $"{(isSession ? "Session" : "")}{(isDevice ? "Device" : "")}";
     }
 }
