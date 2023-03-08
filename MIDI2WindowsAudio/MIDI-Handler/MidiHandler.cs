@@ -6,30 +6,30 @@ public static class MidiHandler
 {
     public static NanoKontrol2 GetNanoKontrol2()
     {
-        //Console.WriteLine("Input Devices:");
+        Console.WriteLine("MIDI Input Devices:");
         InputDevice? nanoKontrolIn = null;
         InputDevice[] iDevices = InputDevice.GetAll().ToArray();
         foreach (InputDevice inputDevice in iDevices)
         {
             if (inputDevice.Name.Contains("nanoKONTROL2", StringComparison.InvariantCultureIgnoreCase))
             {
-                //Console.Write("-->");
+                Console.Write("-->");
                 nanoKontrolIn = inputDevice;
             }
-            //Console.WriteLine(inputDevice.Name);
+            Console.WriteLine(inputDevice.Name);
         }
         
-        //Console.WriteLine("Output Devices:");
+        Console.WriteLine("MIDI Output Devices:");
         OutputDevice[] oDevices = OutputDevice.GetAll().ToArray();
         OutputDevice? nanoKontrolOut = null;
         foreach (OutputDevice outputDevice in oDevices)
         {
             if (outputDevice.Name.Contains("nanoKONTROL2", StringComparison.InvariantCultureIgnoreCase))
             {
-                //Console.Write("-->");
+                Console.Write("-->");
                 nanoKontrolOut = outputDevice;
             }
-            //Console.WriteLine(outputDevice.Name);
+            Console.WriteLine(outputDevice.Name);
         }
 
         if (nanoKontrolIn is not null && nanoKontrolOut is not null)
