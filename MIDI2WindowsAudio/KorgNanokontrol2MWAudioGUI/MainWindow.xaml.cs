@@ -22,18 +22,18 @@ namespace KorgNanokontrol2MWAudioGUI
         public MainWindow()
         {
             ConsoleWriter consoleListener = new ConsoleWriter();
-            consoleListener.OnWriteLine += OnConsoleNewLine;
+            consoleListener.OnWrite += OnConsoleWrite;
             Console.SetOut(consoleListener);
             Console.SetError(consoleListener);
             ContentRendered += AfterInit;
             InitializeComponent();
         }
 
-        private void OnConsoleNewLine(object? sender, ConsoleWriterEventArgs e)
+        private void OnConsoleWrite(object? sender, ConsoleWriterEventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
-                ConsoleOutput.AppendText($"\n{e.text}");
+                ConsoleOutput.AppendText($"{e.text}");
                 ConsoleOutput.ScrollToLine(ConsoleOutput.LineCount - 1);
             });
         }

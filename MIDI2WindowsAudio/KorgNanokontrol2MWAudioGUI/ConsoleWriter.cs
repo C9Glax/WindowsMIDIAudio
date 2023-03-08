@@ -18,15 +18,8 @@ public class ConsoleWriter : TextWriter
     public override void Write(string? text)
     {
         if(text is not null)
-            this.OnWrite?.Invoke(this, new ConsoleWriterEventArgs(text));
+            OnWrite?.Invoke(this, new ConsoleWriterEventArgs(text));
         base.Write(text);
-    }
-
-    public override void WriteLine(string? text)
-    {
-        if (text is not null)
-            this.OnWriteLine?.Invoke(this, new ConsoleWriterEventArgs(text));
-        base.WriteLine(text);
     }
 }
 
