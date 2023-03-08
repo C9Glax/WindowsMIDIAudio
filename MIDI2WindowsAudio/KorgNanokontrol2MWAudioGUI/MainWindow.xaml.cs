@@ -61,7 +61,6 @@ namespace KorgNanokontrol2MWAudioGUI
                     UpdateAudioGroup(groupNumber, sender.name, sender.isSolo, sender.mute, false, sender.volume);
             }
         }
-
         
         private void UpdateAudioGroup(int groupNumber, string name, bool isSolo, bool muted, bool record, float volume)
         {
@@ -75,14 +74,15 @@ namespace KorgNanokontrol2MWAudioGUI
                 Button recordButton = buttons.Where(button => button.Content.ToString() == "R").ToArray()[0];
                 Slider volumeSlider = FindChildrenWithType<Slider>(group).ToArray()[0];
                 ComboBox devicesComboBox = FindChildrenWithType<ComboBox>(group).ToArray()[0];
-                foreach (ComboBoxItem item in devicesComboBox.Items)
+                devicesComboBox.Items.Clear();
+                devicesComboBox.Items.Add(new ComboBoxItem()
                 {
-                    if (item.IsSelected)
+                    IsSelected = true,
+                    Content = new Label()
                     {
-                        item.Content = name;
-                        break;
+                        Content = name
                     }
-                }
+                });
                 
                 soloButton.Background = isSolo ? buttonPressed : buttonNotPressed;
                 muteButton.Background = muted ? buttonPressed : buttonNotPressed;
@@ -105,24 +105,6 @@ namespace KorgNanokontrol2MWAudioGUI
                     yield return childOfChild;
                 }
             }
-        }
-
-        private void OnClickRestart(object sender, RoutedEventArgs routedEventArgs)
-        {
-            ConsoleOutput.Text = "";
-            Console.WriteLine("Restarting");
-            k2a?.Dispose();
-            k2a = new KorgAndAudioKonnector();
-            k2a.OnAudioControllerStateChanged += K2aOnOnAudioControllerStateChanged;
-            for (byte i = 0; i < k2a.bindings.groupAssignment.Length; i++)
-            {
-                if (k2a.bindings.groupAssignment[i] is not null)
-                {
-                    AudioController audioController = k2a.bindings.groupAssignment[i]!;
-                    UpdateAudioGroup(i, audioController.name, audioController.isSolo, audioController.mute, false, audioController.volume);
-                }
-            }
-            Console.WriteLine("Restarted");
         }
 
         private void OnDeviceContextMenuOpening(object? sender, EventArgs eventArgs)
@@ -160,6 +142,20 @@ namespace KorgNanokontrol2MWAudioGUI
                     comboBox.Items.Add(item);
                 }
                 
+            }
+        }
+
+        private void OnDeviceContextMenuClosing(object? sender, EventArgs e)
+        {
+            if (sender is ComboBox comboBox && k2a is not null)
+            {
+                Grid[] groups = { Group0, Group1, Group2, Group3, Group4, Group5, Group6, Group7 };
+                Grid group = groups.Where(group => group == (Grid)comboBox.Parent).ToArray()[0];
+                int groupNumber = Array.IndexOf(groups, group);
+                if (k2a.bindings.groupAssignment[groupNumber] is { } audioController)
+                {
+                    UpdateAudioGroup(groupNumber, audioController.name, audioController.isSolo, audioController.mute, false, audioController.volume);
+                }
             }
         }
     }
