@@ -17,6 +17,7 @@ public class NanoKontrol2
         midiOut = nanoKontrolOut;
 
         midiIn.EventReceived += OnEventReceived;
+        midiIn.ErrorOccurred += (sender, args) => Console.WriteLine(args);
         midiIn.StartEventsListening();
     }
     
@@ -25,77 +26,64 @@ public class NanoKontrol2
         if (eventArgs.Event is ControlChangeEvent midiEvent)
         {
             ControlChangeEventArgs newEventArgs;
-            SevenBitNumber controlAbsoluteNumber = midiEvent.ControlNumber;
-            SevenBitNumber controlValue = midiEvent.ControlValue;
-            if (controlAbsoluteNumber >= 0 && controlAbsoluteNumber <= 7) //Faders
+            ControlChangeEventArgs.ControlType newEventControlType = ControlChangeEventArgs.ControlType.ControlButton;
+            ControlChangeEventArgs.ControlButtonName newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.NULL;
+            byte controlGroup = byte.MaxValue;
+
+            switch (midiEvent.ControlNumber)
             {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.Fader,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue);
-            }else if (controlAbsoluteNumber >= 16 && controlAbsoluteNumber <= 23) //Knobs
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.Knob,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber - 16), controlValue);
-            }else if (controlAbsoluteNumber >= 32 && controlAbsoluteNumber <= 39) //SoloButtons
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.SoloButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber - 32), controlValue);
-            }else if (controlAbsoluteNumber >= 48 && controlAbsoluteNumber <= 55) //MuteButtons
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.MuteButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber - 48), controlValue);
-            }else if (controlAbsoluteNumber >= 64 && controlAbsoluteNumber <= 71) //RecordButtons
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.RecordButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber - 64), controlValue);
-            }else if (controlAbsoluteNumber == 58) //prevTrack
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.PrevTrack);
-            }else if (controlAbsoluteNumber == 59) //nextTrack
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.NextTrack);
-            }else if (controlAbsoluteNumber == 46) //cycle
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.Cycle);
-            }else if (controlAbsoluteNumber == 60) //setMarker
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.SetMarker);
-            }else if (controlAbsoluteNumber == 61) //prevMarker
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.PrevMarker);
-            }else if (controlAbsoluteNumber == 62) //nextMarker
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.PrevTrack);
-                
-            }else if (controlAbsoluteNumber == 43) //backwards
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.Previous);
-            }else if (controlAbsoluteNumber == 44) //forwards
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.Next);
-            }else if (controlAbsoluteNumber == 42) //stop
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.Stop);
-            }else if (controlAbsoluteNumber == 41) //play
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.Play);
-            }else if (controlAbsoluteNumber == 45) //record
-            {
-                newEventArgs = new ControlChangeEventArgs(ControlChangeEventArgs.ControlType.ControlButton,
-                    controlAbsoluteNumber, Convert.ToByte(controlAbsoluteNumber), controlValue, ControlChangeEventArgs.ControlButtonName.Record);
+                case 46: //Cycle
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.Cycle;
+                    break;
+                case 41: //PlayPause
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.PlayPause;
+                    break;
+                case 42: //Stop
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.Stop;
+                    break;
+                case 43: //Previous
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.Previous;
+                    break;
+                case 44: //Next
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.Next;
+                    break;
+                case 45: //Record
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.Record;
+                    break;
+                case 58: //Track Previous
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.PrevTrack;
+                    break;
+                case 59: //Track Next
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.NextTrack;
+                    break;
+                case 60: //Marker Set
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.SetMarker;
+                    break;
+                case 61: //Marker Previous
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.PrevMarker;
+                    break;
+                case 62: //Marker Next
+                    newEventControlButtonName = ControlChangeEventArgs.ControlButtonName.NextMarker;
+                    break;
+                default:
+                    newEventControlType = (ControlChangeEventArgs.ControlType)Convert.ToByte(Math.Floor(midiEvent.ControlNumber / 16.0));
+                    controlGroup = Convert.ToByte(midiEvent.ControlNumber % 16);
+                    if (controlGroup > 7)
+                    {
+                        throw new Exception($"Invalid group {controlGroup} {midiEvent.ControlNumber}");
+                    }
+                    break;
             }
-            else
+
+            if (newEventControlType == ControlChangeEventArgs.ControlType.ControlButton) //GlobalControl
             {
-                throw new Exception($"ControlNumber not recognised: {controlAbsoluteNumber}");
+                newEventArgs = new ControlChangeEventArgs(newEventControlType, midiEvent.ControlNumber,
+                    controlGroup, midiEvent.ControlValue, newEventControlButtonName);
+            }
+            else //GroupControl
+            {
+                newEventArgs = new ControlChangeEventArgs(newEventControlType, midiEvent.ControlNumber,
+                    controlGroup, midiEvent.ControlValue);
             }
             
             OnControlChange?.Invoke(this, newEventArgs);

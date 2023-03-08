@@ -35,14 +35,19 @@ public class ControlChangeEventArgs : EventArgs
     public SevenBitNumber value { get; }
         
     private ControlButtonName? controlButtonName { get; }
-    public enum ControlType
+    public enum ControlType : byte
     {
-        Fader, Knob, RecordButton, MuteButton, SoloButton, ControlButton
+        Fader = 0, //0-7
+        Knob = 1, //16-23
+        SoloButton = 2, //32-39
+        MuteButton = 3, //48-55
+        RecordButton = 4, //64-71
+        ControlButton
     }
 
     public enum ControlButtonName
     {
-        PrevTrack, NextTrack, Cycle, SetMarker, PrevMarker, NextMarker, Previous, Next, Stop, Play, Record
+        PrevTrack, NextTrack, Cycle, SetMarker, PrevMarker, NextMarker, Previous, Next, Stop, PlayPause, Record, NULL
     }
 }
 
