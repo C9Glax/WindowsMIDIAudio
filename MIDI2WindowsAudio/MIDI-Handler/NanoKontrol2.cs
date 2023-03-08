@@ -8,6 +8,7 @@ public class NanoKontrol2
 {
     private readonly InputDevice midiIn;
     private readonly OutputDevice midiOut;
+
     public const float MaxValue = 127f;
     public event OnControlChangeEventHandler? OnControlChange;
 
@@ -20,8 +21,8 @@ public class NanoKontrol2
         midiIn.ErrorOccurred += (sender, args) => Console.WriteLine(args);
         midiIn.StartEventsListening();
     }
-    
-    private void OnEventReceived(object? sender, MidiEventReceivedEventArgs eventArgs)
+
+    private void HandleMidiEvent(MidiEventReceivedEventArgs eventArgs)
     {
         if (eventArgs.Event is ControlChangeEvent midiEvent)
         {
@@ -92,6 +93,12 @@ public class NanoKontrol2
         {
             throw new Exception($"Event not recognised: {eventArgs.Event}");
         }
+    }
+    
+    private void OnEventReceived(object? sender, MidiEventReceivedEventArgs eventArgs)
+    {
+        Task newTask = new Task(() => HandleMidiEvent(eventArgs));
+        newTask.Start();
     }
 
     public void Dispose()
