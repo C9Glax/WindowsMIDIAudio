@@ -82,6 +82,7 @@ public class KorgAndAudioKonnector
         KeepRunning = false;
         nanoKontrol2.Dispose();
         windowsAudioHandler.Dispose();
+        Environment.Exit(0);
     }
 
     public void SetBindingsForGroup(byte group, AudioController audioController)

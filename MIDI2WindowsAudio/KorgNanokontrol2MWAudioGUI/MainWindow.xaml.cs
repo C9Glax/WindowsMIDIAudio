@@ -168,7 +168,6 @@ namespace KorgNanokontrol2MWAudioGUI
         private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
         {
             k2a?.Dispose();
-            Environment.Exit(0);
         }
     }
 }
