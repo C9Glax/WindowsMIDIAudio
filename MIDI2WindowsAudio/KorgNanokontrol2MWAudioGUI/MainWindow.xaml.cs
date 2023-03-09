@@ -14,8 +14,8 @@ namespace KorgNanokontrol2MWAudioGUI
     /// </summary>
     public sealed partial class MainWindow
     {
-        private readonly Brush buttonPressed = Brushes.Red;
-        private readonly Brush buttonNotPressed = Brushes.White;
+        private readonly Brush buttonPressedColor = Brushes.Red;
+        private readonly Brush buttonNotPressedColor = Brushes.White;
         // ReSharper disable once InconsistentNaming
         private KorgAndAudioKonnector? k2a;
         
@@ -48,7 +48,7 @@ namespace KorgNanokontrol2MWAudioGUI
                 if (k2a.bindings.groupAssignment[i] is not null)
                 {
                     AudioController audioController = k2a.bindings.groupAssignment[i]!;
-                    UpdateAudioGroup(i, audioController.name, audioController.isSolo, audioController.mute, false, audioController.volume);
+                    UpdateAudioGroupGui(i, audioController.name, audioController.isSolo, audioController.mute, false, audioController.volume);
                 }
             }
         }
@@ -58,11 +58,11 @@ namespace KorgNanokontrol2MWAudioGUI
             if (k2a is not null)
             {
                 if(Array.IndexOf(k2a.bindings.groupAssignment, sender) is { } groupNumber and not -1)
-                    UpdateAudioGroup(groupNumber, sender.name, sender.isSolo, sender.mute, false, sender.volume);
+                    UpdateAudioGroupGui(groupNumber, sender.name, sender.isSolo, sender.mute, false, sender.volume);
             }
         }
         
-        private void UpdateAudioGroup(int groupNumber, string name, bool isSolo, bool muted, bool record, float volume)
+        private void UpdateAudioGroupGui(int groupNumber, string name, bool isSolo, bool muted, bool record, float volume)
         {
             Grid[] groups = { Group0, Group1, Group2, Group3, Group4, Group5, Group6, Group7 };
             Dispatcher.Invoke(() =>
@@ -84,8 +84,8 @@ namespace KorgNanokontrol2MWAudioGUI
                     }
                 });
                 
-                soloButton.Background = isSolo ? buttonPressed : buttonNotPressed;
-                muteButton.Background = muted ? buttonPressed : buttonNotPressed;
+                soloButton.Background = isSolo ? buttonPressedColor : buttonNotPressedColor;
+                muteButton.Background = muted ? buttonPressedColor : buttonNotPressedColor;
                 volumeSlider.Value = Math.Abs(volume * 100);
             });
         }
@@ -107,7 +107,7 @@ namespace KorgNanokontrol2MWAudioGUI
             }
         }
 
-        private void OnDeviceContextMenuOpening(object? sender, EventArgs eventArgs)
+        private void OnDeviceChangeDropDownOpening(object? sender, EventArgs eventArgs)
         {
             if (sender is ComboBox comboBox && k2a is not null)
             {
@@ -145,7 +145,7 @@ namespace KorgNanokontrol2MWAudioGUI
             }
         }
 
-        private void OnDeviceContextMenuClosing(object? sender, EventArgs e)
+        private void OnDeviceDropDownClosing(object? sender, EventArgs e)
         {
             if (sender is ComboBox comboBox && k2a is not null)
             {
@@ -154,7 +154,7 @@ namespace KorgNanokontrol2MWAudioGUI
                 int groupNumber = Array.IndexOf(groups, group);
                 if (k2a.bindings.groupAssignment[groupNumber] is { } audioController)
                 {
-                    UpdateAudioGroup(groupNumber, audioController.name, audioController.isSolo, audioController.mute, false, audioController.volume);
+                    UpdateAudioGroupGui(groupNumber, audioController.name, audioController.isSolo, audioController.mute, false, audioController.volume);
                 }
             }
         }

@@ -8,7 +8,7 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <Grid Width="65" Margin="5 10" x:Name="Group0" Background="LightGray">
-                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening" DropDownClosed="OnDeviceContextMenuClosing">
+                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceChangeDropDownOpening" DropDownClosed="OnDeviceDropDownClosing">
                     <ComboBox.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </ComboBox.LayoutTransform>
@@ -35,7 +35,7 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="65" Margin="5 10" x:Name="Group1" Background="LightGray">
-                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening" DropDownClosed="OnDeviceContextMenuClosing">
+                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceChangeDropDownOpening" DropDownClosed="OnDeviceDropDownClosing">
                     <ComboBox.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </ComboBox.LayoutTransform>
@@ -62,7 +62,7 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="65" Margin="5 10" x:Name="Group2" Background="LightGray">
-                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening" DropDownClosed="OnDeviceContextMenuClosing">
+                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceChangeDropDownOpening" DropDownClosed="OnDeviceDropDownClosing">
                     <ComboBox.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </ComboBox.LayoutTransform>
@@ -89,7 +89,7 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="65" Margin="5 10" x:Name="Group3" Background="LightGray">
-                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening" DropDownClosed="OnDeviceContextMenuClosing">
+                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceChangeDropDownOpening" DropDownClosed="OnDeviceDropDownClosing">
                     <ComboBox.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </ComboBox.LayoutTransform>
@@ -116,7 +116,7 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="65" Margin="5 10" x:Name="Group4" Background="LightGray">
-                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening" DropDownClosed="OnDeviceContextMenuClosing">
+                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceChangeDropDownOpening" DropDownClosed="OnDeviceDropDownClosing">
                     <ComboBox.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </ComboBox.LayoutTransform>
@@ -143,7 +143,7 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="65" Margin="5 10" x:Name="Group5" Background="LightGray">
-                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening" DropDownClosed="OnDeviceContextMenuClosing">
+                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceChangeDropDownOpening" DropDownClosed="OnDeviceDropDownClosing">
                     <ComboBox.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </ComboBox.LayoutTransform>
@@ -170,7 +170,7 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="65" Margin="5 10" x:Name="Group6" Background="LightGray">
-                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening" DropDownClosed="OnDeviceContextMenuClosing">
+                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceChangeDropDownOpening" DropDownClosed="OnDeviceDropDownClosing">
                     <ComboBox.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </ComboBox.LayoutTransform>
@@ -197,7 +197,7 @@
                 <Slider Orientation="Vertical" HorizontalAlignment="Right" Width="20" Margin="5 0" SmallChange="2" LargeChange="5" Maximum="100" Minimum="0" TickFrequency="5" Value="20"></Slider>
             </Grid>
             <Grid Width="65" Margin="5 10" x:Name="Group7" Background="LightGray">
-                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceContextMenuOpening" DropDownClosed="OnDeviceContextMenuClosing">
+                <ComboBox Width="250" Height="27" Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownOpened="OnDeviceChangeDropDownOpening" DropDownClosed="OnDeviceDropDownClosing">
                     <ComboBox.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </ComboBox.LayoutTransform>
