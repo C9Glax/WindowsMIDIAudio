@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,22 +28,26 @@ namespace KorgNanokontrol2MWAudioGUI
             Console.SetError(consoleListener);
             ContentRendered += AfterInit;
             InitializeComponent();
+            Console.WriteLine("Loading...");
         }
 
         private void OnConsoleWrite(object? sender, ConsoleWriterEventArgs e)
         {
             Dispatcher.Invoke(() =>
             {
-                ConsoleOutput.AppendText($"{e.text}");
+                if(e.text != "\r\n")
+                    ConsoleOutput.AppendText($"[{DateTime.Now.ToLongTimeString()}] {e.text}");
+                else
+                    ConsoleOutput.AppendText(e.text);
                 ConsoleOutput.ScrollToLine(ConsoleOutput.LineCount - 1);
             });
         }
 
         private void AfterInit(object? sender, EventArgs eventArgs)
         {
-            Console.WriteLine("Initialized Window");
             k2a = new KorgAndAudioKonnector();
             k2a.OnAudioControllerStateChanged += K2aOnOnAudioControllerStateChanged;
+            Console.WriteLine("Loaded MIDI and Audio-Controllers");
             for (byte i = 0; i < k2a.bindings.groupAssignment.Length; i++)
             {
                 if (k2a.bindings.groupAssignment[i] is not null)
@@ -51,6 +56,7 @@ namespace KorgNanokontrol2MWAudioGUI
                     UpdateAudioGroupGui(i, audioController.name, audioController.isSolo, audioController.mute, false, audioController.volume);
                 }
             }
+            Console.WriteLine("Initialized Window.");
         }
 
         private void K2aOnOnAudioControllerStateChanged(AudioController sender)
@@ -157,6 +163,12 @@ namespace KorgNanokontrol2MWAudioGUI
                     UpdateAudioGroupGui(groupNumber, audioController.name, audioController.isSolo, audioController.mute, false, audioController.volume);
                 }
             }
+        }
+
+        private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
+        {
+            k2a?.Dispose();
+            Environment.Exit(0);
         }
     }
 }
